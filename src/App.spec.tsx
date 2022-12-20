@@ -38,9 +38,7 @@ describe("App", () => {
     await userEvent.type(screen.getByRole("textbox"), "test");
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
-    expect(
-      await screen.findByText(/How long will it take/)
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/How long/)).toBeInTheDocument();
   });
 
   it("does not ask for estimate before clicking submit", async () => {
@@ -50,7 +48,7 @@ describe("App", () => {
 
     await userEvent.type(screen.getByRole("textbox"), "test");
 
-    expect(screen.queryByText(/How long will it take/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/How long/)).not.toBeInTheDocument();
   });
 
   it("displays text of task to estimate", async () => {

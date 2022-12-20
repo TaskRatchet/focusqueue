@@ -69,7 +69,10 @@ function App() {
 
         {state.mode === "estimate" && (
           <>
-            <p>How long will it take?</p>
+            <p>
+              How long do you estimate is remaining to complete the following
+              task?
+            </p>
             <p>"{state.tasks[0]}"</p>
           </>
         )}
