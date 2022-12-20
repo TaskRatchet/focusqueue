@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useCountdown from "@bradgarropy/use-countdown";
+import Stack from "@mui/material/Stack";
+import Typography from "@mui/material/Typography";
 
 function App() {
   const [task, setTask] = useState("");
@@ -14,7 +16,7 @@ function App() {
   });
 
   return (
-    <div className="App">
+    <Stack spacing={2}>
       <TextField id="task" label="Task" variant="outlined" />
       <TextField
         id="time"
@@ -31,15 +33,21 @@ function App() {
       <Button
         variant="contained"
         onClick={() => {
-          if (Number.isFinite(m) && Number.isFinite(s)) {
-            countdown.reset();
+          if (!countdown.isActive) {
+            if (Number.isFinite(m) && Number.isFinite(s)) {
+              countdown.reset();
+            }
+          } else {
+            countdown.pause();
           }
         }}
       >
-        Start
+        {countdown.isPaused ? "Start" : "Pause"}
       </Button>
-      <div>{countdown.formatted}</div>
-    </div>
+      <Typography variant="h1" align="center">
+        {countdown.formatted}
+      </Typography>
+    </Stack>
   );
 }
 
