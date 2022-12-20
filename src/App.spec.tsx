@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
@@ -46,6 +46,29 @@ describe("App", () => {
     await user.click(screen.getByRole("button"));
 
     expect(await screen.findByText("00:01")).toBeInTheDocument();
+  });
+
+  it("waits until start click before updating countdown", async () => {
+    vi.useFakeTimers();
+
+    const { rerender } = render(<App />);
+
+    const user = userEvent.setup({
+      advanceTimers: () => vi.runOnlyPendingTimers(),
+    });
+
+    await user.type(screen.getByLabelText("Task"), "test");
+    await user.clear(screen.getByLabelText("Time"));
+    await user.type(screen.getByLabelText("Time"), "00:05");
+
+    vi.advanceTimersByTime(1000);
+
+    rerender(<App />);
+
+    expect(screen.getByText("00:00")).toBeInTheDocument();
+
+    vi.runOnlyPendingTimers();
+    vi.useRealTimers();
   });
 });
 

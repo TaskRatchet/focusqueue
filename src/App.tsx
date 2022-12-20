@@ -1,12 +1,17 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import "./App.css";
+import { useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import useCountdown from "@bradgarropy/use-countdown";
 
 function App() {
   const [task, setTask] = useState("");
-  const [time, setTime] = useState("00:00");
+  const [time, setTime] = useState("");
+  const [m, setM] = useState(0);
+  const [s, setS] = useState(0);
+  const countdown = useCountdown({
+    minutes: m,
+    seconds: s,
+  });
 
   return (
     <div className="App">
@@ -16,12 +21,24 @@ function App() {
         label="Time"
         variant="outlined"
         value={time}
-        onChange={(e) => setTime(e.target.value)}
+        onChange={(e) => {
+          setTime(e.target.value);
+          const [m, s] = e.target.value.split(":");
+          setM(parseInt(m));
+          setS(parseInt(s));
+        }}
       />
-      <Button variant="contained" onClick={() => {}}>
+      <Button
+        variant="contained"
+        onClick={() => {
+          if (Number.isFinite(m) && Number.isFinite(s)) {
+            countdown.reset();
+          }
+        }}
+      >
         Start
       </Button>
-      <div>{time}</div>
+      <div>{countdown.formatted}</div>
     </div>
   );
 }
