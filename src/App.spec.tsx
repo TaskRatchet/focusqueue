@@ -38,7 +38,7 @@ describe("App", () => {
     await userEvent.type(screen.getByRole("textbox"), "test");
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
-    expect(await screen.findByText(/How long/)).toBeInTheDocument();
+    expect(await screen.findByText(/How long do/)).toBeInTheDocument();
   });
 
   it("does not ask for estimate before clicking submit", async () => {
@@ -48,7 +48,7 @@ describe("App", () => {
 
     await userEvent.type(screen.getByRole("textbox"), "test");
 
-    expect(screen.queryByText(/How long/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/How long do/)).not.toBeInTheDocument();
   });
 
   it("displays text of task to estimate", async () => {
@@ -70,7 +70,104 @@ describe("App", () => {
     await userEvent.type(screen.getByRole("textbox"), "test");
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
-    await userEvent.type(screen.getByRole("textbox"), "1:30");
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+  });
+
+  it("requests session length on estimation page", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(await screen.findByText(/How long would/)).toBeInTheDocument();
+  });
+
+  it("shows countdown after estimation is submitted", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(await screen.findByDisplayValue(/1:30/)).toBeInTheDocument();
+  });
+
+  it("shows task text in countdown", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(await screen.findByDisplayValue(/test/)).toBeInTheDocument();
+  });
+
+  it("shows the session duration on the clock", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(await screen.findByText(/1:30/)).toBeInTheDocument();
   });
 });

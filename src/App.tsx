@@ -10,12 +10,19 @@ import Stack from "@mui/material/Stack";
 type Mode = "dump" | "estimate" | "countdown";
 type Action =
   | { type: "setTasks"; payload: string }
-  | { type: "setMode"; payload: Mode };
-type State = { tasks: string[]; currentTask: number; mode: Mode };
+  | { type: "setMode"; payload: Mode }
+  | { type: "setSessionLength"; payload: string };
+type State = {
+  tasks: string[];
+  currentTask: number;
+  sessionLength: string;
+  mode: Mode;
+};
 
 const initialState: State = {
   tasks: [],
   currentTask: 0,
+  sessionLength: "",
   mode: "dump",
 };
 
@@ -30,6 +37,11 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         mode: action.payload,
+      };
+    case "setSessionLength":
+      return {
+        ...state,
+        sessionLength: action.payload,
       };
     default:
       return state;
@@ -72,8 +84,27 @@ function App() {
         {state.mode === "estimate" && (
           <Stack spacing={2}>
             <Typography variant="h5">{state.tasks[0]}</Typography>
+
             <p>How long do you estimate is remaining to complete this task?</p>
-            <TextField id="estimate" label="Estimate" variant="outlined" />
+
+            <TextField
+              id="estimate"
+              label="Estimated Time Remaining"
+              variant="outlined"
+            />
+
+            <p>How long would you like to spend on this task now?</p>
+
+            <TextField
+              id="time"
+              label="Session Length"
+              variant="outlined"
+              value={state.sessionLength}
+              onChange={(e) =>
+                dispatch({ type: "setSessionLength", payload: e.target.value })
+              }
+            />
+
             <Button
               variant="contained"
               onClick={() => {
@@ -85,7 +116,12 @@ function App() {
           </Stack>
         )}
 
-        {/* <Countdown /> */}
+        {state.mode === "countdown" && (
+          <Countdown
+            taskDescription={state.tasks[0] || ""}
+            sessionLength={state.sessionLength}
+          />
+        )}
       </Container>
     </CssBaseline>
   );

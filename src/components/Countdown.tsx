@@ -6,11 +6,25 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import speak from "../lib/speak";
 
-export default function Countdown() {
-  const [task, setTask] = useState("");
-  const [time, setTime] = useState("");
-  const [m, setM] = useState(0);
-  const [s, setS] = useState(0);
+export default function Countdown({
+  taskDescription = "",
+  sessionLength = "",
+}: {
+  taskDescription?: string;
+  sessionLength?: string;
+}) {
+  const [task, setTask] = useState(taskDescription || "");
+  const [time, setTime] = useState(sessionLength || "");
+  const [m, setM] = useState(() => {
+    const m = sessionLength.split(":")[0];
+    const mm = parseInt(m);
+    return Number.isFinite(mm) ? mm : 0;
+  });
+  const [s, setS] = useState(() => {
+    const s = sessionLength.split(":")[1];
+    const ss = parseInt(s);
+    return Number.isFinite(ss) ? ss : 0;
+  });
   const countdown = useCountdown({
     minutes: m,
     seconds: s,
@@ -19,7 +33,15 @@ export default function Countdown() {
 
   return (
     <Stack spacing={2}>
-      <TextField id="task" label="Task" variant="outlined" />
+      <TextField
+        id="task"
+        label="Task"
+        variant="outlined"
+        value={task}
+        onChange={(e) => {
+          setTask(e.target.value);
+        }}
+      />
       <TextField
         id="time"
         label="Time"
