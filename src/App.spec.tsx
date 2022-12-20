@@ -170,4 +170,101 @@ describe("App", () => {
 
     expect(await screen.findByText(/1:30/)).toBeInTheDocument();
   });
+
+  it("allows user to mark task as complete after completing session", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    expect(
+      await screen.findByText(/Mark task as complete/)
+    ).toBeInTheDocument();
+  });
+
+  it("allows user to start a new session for the same task", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    expect(
+      await screen.findByText(/Keep working on the same task/)
+    ).toBeInTheDocument();
+  });
+
+  it("allows user to start a new session for a new task", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    expect(await screen.findByText(/next task/i)).toBeInTheDocument();
+  });
 });

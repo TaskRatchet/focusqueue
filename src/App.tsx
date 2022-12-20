@@ -7,7 +7,7 @@ import { useReducer } from "react";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 
-type Mode = "dump" | "estimate" | "countdown";
+type Mode = "dump" | "estimate" | "countdown" | "review";
 type Action =
   | { type: "setTasks"; payload: string }
   | { type: "setMode"; payload: Mode }
@@ -117,10 +117,28 @@ function App() {
         )}
 
         {state.mode === "countdown" && (
-          <Countdown
-            taskDescription={state.tasks[0] || ""}
-            sessionLength={state.sessionLength}
-          />
+          <>
+            <Countdown
+              taskDescription={state.tasks[0] || ""}
+              sessionLength={state.sessionLength}
+            />
+            <Button
+              variant="contained"
+              onClick={() => {
+                dispatch({ type: "setMode", payload: "review" });
+              }}
+            >
+              Finish session
+            </Button>
+          </>
+        )}
+
+        {state.mode === "review" && (
+          <Stack spacing={2}>
+            <Button variant="contained">Mark task as complete</Button>
+            <Button variant="contained">Keep working on the same task</Button>
+            <Button variant="contained">Move on to the next task</Button>
+          </Stack>
         )}
       </Container>
     </CssBaseline>
