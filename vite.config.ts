@@ -4,5 +4,9 @@ import react from "@vitejs/plugin-react-swc";
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  test: { setupFiles: "vitest.setup.ts", environment: "jsdom" },
+  test: {
+    setupFiles: "vitest.setup.ts",
+    environment: "jsdom",
+    clearMocks: true,
+  },
 });
