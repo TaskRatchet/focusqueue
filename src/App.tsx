@@ -4,6 +4,8 @@ import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Button from "@mui/material/Button";
 import { useReducer } from "react";
+import Typography from "@mui/material/Typography";
+import Stack from "@mui/material/Stack";
 
 type Mode = "dump" | "estimate" | "countdown";
 type Action =
@@ -68,13 +70,19 @@ function App() {
         )}
 
         {state.mode === "estimate" && (
-          <>
-            <p>
-              How long do you estimate is remaining to complete the following
-              task?
-            </p>
-            <p>"{state.tasks[0]}"</p>
-          </>
+          <Stack spacing={2}>
+            <Typography variant="h5">{state.tasks[0]}</Typography>
+            <p>How long do you estimate is remaining to complete this task?</p>
+            <TextField id="estimate" label="Estimate" variant="outlined" />
+            <Button
+              variant="contained"
+              onClick={() => {
+                dispatch({ type: "setMode", payload: "countdown" });
+              }}
+            >
+              Submit
+            </Button>
+          </Stack>
         )}
 
         {/* <Countdown /> */}

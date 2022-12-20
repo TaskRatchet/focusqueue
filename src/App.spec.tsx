@@ -61,4 +61,16 @@ describe("App", () => {
 
     expect(await screen.findByText(/test/)).toBeInTheDocument();
   });
+
+  it("accepts an estimate in mm:ss format", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(screen.getByRole("textbox"), "1:30");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+  });
 });
