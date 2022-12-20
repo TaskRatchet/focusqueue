@@ -12,6 +12,7 @@ const m: TestingLibraryMatchers<string, void> = matchers;
 expect.extend(m);
 
 vi.mock("axios");
+vi.mock("./src/lib/speak");
 
 afterEach(() => {
   cleanup();
