@@ -1,6 +1,13 @@
 import axios from "axios";
 
-export default async function getProjectsList(token: string) {
+type Project = {
+  id: number;
+  name: string;
+};
+
+export default async function getProjectsList(
+  token: string
+): Promise<Array<Project>> {
   const response = await axios.get("https://api.taiga.io/api/v1/projects", {
     headers: {
       "Content-Type": "application/json",
