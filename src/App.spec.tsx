@@ -1,7 +1,17 @@
 import { describe, it, expect } from "vitest";
-import getProjectsList from "./lib/taiga/getProjectsList";
-import login from "./lib/taiga/login";
+import { render, screen } from "@testing-library/react";
+import App from "./App";
 
 describe("App", () => {
-  it("logs in", () => {});
+  it("has task input", () => {
+    render(<App />);
+
+    expect(screen.getByLabelText("Task")).toBeInTheDocument();
+  });
 });
+
+// TODO
+// task input
+// time input
+// submit button
+// countdown
