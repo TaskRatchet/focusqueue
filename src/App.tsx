@@ -46,12 +46,16 @@ function reducer(state: State, action: Action): State {
         sessionLength: action.payload,
       };
     case "completeTask":
-      const nextMode =
-        state.currentTask === state.tasks.length - 1 ? "dump" : "estimate";
+      // Define a new list of tasks that excludes the current task.
+      const tasks = state.tasks.filter(
+        (_, index) => index !== state.currentTask
+      );
+
+      const nextMode = tasks.length === 0 ? "dump" : "estimate";
 
       return {
         ...state,
-        currentTask: state.currentTask + 1,
+        tasks,
         mode: nextMode,
       };
     case "nextTask":
@@ -61,7 +65,7 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         currentTask: index,
-        mode: "estimate",
+        mode: state.tasks.length < 2 ? "dump" : "estimate",
       };
     default:
       return state;

@@ -343,7 +343,7 @@ describe("App", () => {
 
     userEvent.setup();
 
-    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.type(screen.getByRole("textbox"), "test\nanother");
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     await userEvent.type(
@@ -513,5 +513,55 @@ describe("App", () => {
     await userEvent.click(screen.getByRole("button", { name: /next task/i }));
 
     expect(await screen.findByText(/test/i)).toBeInTheDocument();
+  });
+
+  it("does not show user a task they previously completed", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test\nanother");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    // submit 'test' estimate
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    // finish 'test' session
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    // mark 'test' as complete
+    await userEvent.click(
+      screen.getByRole("button", { name: /Mark task as complete/i })
+    );
+
+    // submit 'another' estimate
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    // finish 'another' session
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    // ask for next task in queue
+    await userEvent.click(screen.getByRole("button", { name: /next task/i }));
+
+    // expect to be sent to the dump screen
+    expect(await screen.findByText(/What would you like/i)).toBeInTheDocument();
   });
 });
