@@ -440,4 +440,78 @@ describe("App", () => {
 
     expect(await screen.findByText(/What would you like/i)).toBeInTheDocument();
   });
+
+  it('shows user next task when they click "next task" button', async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test\nanother");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /next task/i }));
+
+    expect(await screen.findByText(/another/i)).toBeInTheDocument();
+  });
+
+  it("cycles back to first task when end of tasks is reached", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test\nanother");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /next task/i }));
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /next task/i }));
+
+    expect(await screen.findByText(/test/i)).toBeInTheDocument();
+  });
 });

@@ -12,7 +12,8 @@ type Action =
   | { type: "setTasks"; payload: string }
   | { type: "setMode"; payload: Mode }
   | { type: "setSessionLength"; payload: string }
-  | { type: "completeTask" };
+  | { type: "completeTask" }
+  | { type: "nextTask" };
 type State = {
   tasks: string[];
   currentTask: number;
@@ -52,6 +53,15 @@ function reducer(state: State, action: Action): State {
         ...state,
         currentTask: state.currentTask + 1,
         mode: nextMode,
+      };
+    case "nextTask":
+      const isLastTask = state.currentTask === state.tasks.length - 1;
+      const index = isLastTask ? 0 : state.currentTask + 1;
+
+      return {
+        ...state,
+        currentTask: index,
+        mode: "estimate",
       };
     default:
       return state;
@@ -166,7 +176,7 @@ function App() {
             <Button
               variant="contained"
               onClick={() => {
-                dispatch({ type: "setMode", payload: "estimate" });
+                dispatch({ type: "nextTask" });
               }}
             >
               Move on to the next task
