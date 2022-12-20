@@ -3,7 +3,8 @@ import { vi } from "vitest";
 import matchers, {
   TestingLibraryMatchers,
 } from "@testing-library/jest-dom/matchers";
-import { expect } from "vitest";
+import { expect, afterEach } from "vitest";
+import { cleanup } from "@testing-library/react";
 
 const m: TestingLibraryMatchers<string, void> = matchers;
 
@@ -11,3 +12,7 @@ const m: TestingLibraryMatchers<string, void> = matchers;
 expect.extend(m);
 
 vi.mock("axios");
+
+afterEach(() => {
+  cleanup();
+});
