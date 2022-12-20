@@ -3,6 +3,8 @@ import { render, screen, act } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 
+// Use this function instead of userEvent.click() to avoid
+// advancing timers before the click event is fired.
 const clickInstant = (name?: string | RegExp) =>
   act(() =>
     screen
