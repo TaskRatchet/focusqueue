@@ -74,7 +74,7 @@ describe("App", () => {
   });
 
   it("pauses countdown", async () => {
-    const { rerender } = render(<App />);
+    render(<App />);
 
     const user = userEvent.setup({
       advanceTimers: () => vi.runOnlyPendingTimers(),
@@ -95,7 +95,37 @@ describe("App", () => {
 
     expect(screen.getByText("00:04")).toBeInTheDocument();
   });
-});
 
-// TODO
-// countdown
+  it("resumes countdown", async () => {
+    const { rerender } = render(<App />);
+
+    const user = userEvent.setup({
+      advanceTimers: () => vi.runOnlyPendingTimers(),
+    });
+
+    await user.type(screen.getByLabelText("Task"), "test");
+    await user.clear(screen.getByLabelText("Time"));
+    await user.type(screen.getByLabelText("Time"), "00:05");
+
+    // start timer
+    await user.click(screen.getByRole("button"));
+
+    // pause timer
+    await clickInstant();
+
+    // confirm paused
+    await screen.findByText("Start");
+    vi.advanceTimersByTime(1000);
+    rerender(<App />);
+    expect(screen.getByText("00:04")).toBeInTheDocument();
+
+    // resume timer
+    await clickInstant();
+
+    // confirm resumed
+    await screen.findByText("Pause");
+    vi.advanceTimersByTime(1000);
+    rerender(<App />);
+    expect(screen.getByText("00:03")).toBeInTheDocument();
+  });
+});

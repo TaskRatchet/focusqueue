@@ -38,7 +38,11 @@ function App() {
               countdown.reset();
             }
           } else {
-            countdown.pause();
+            if (countdown.isPaused) {
+              countdown.resume();
+            } else {
+              countdown.pause();
+            }
           }
         }}
       >
