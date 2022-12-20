@@ -273,7 +273,7 @@ describe("App", () => {
 
     userEvent.setup();
 
-    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.type(screen.getByRole("textbox"), "test\nanother");
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     await userEvent.type(
@@ -404,5 +404,40 @@ describe("App", () => {
     );
 
     expect(screen.queryByText(/test/i)).not.toBeInTheDocument();
+  });
+
+  it("returns user to dump page if all tasks completed", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Mark task as complete/i })
+    );
+
+    expect(await screen.findByText(/What would you like/i)).toBeInTheDocument();
   });
 });

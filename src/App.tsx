@@ -45,9 +45,13 @@ function reducer(state: State, action: Action): State {
         sessionLength: action.payload,
       };
     case "completeTask":
+      const nextMode =
+        state.currentTask === state.tasks.length - 1 ? "dump" : "estimate";
+
       return {
         ...state,
         currentTask: state.currentTask + 1,
+        mode: nextMode,
       };
     default:
       return state;
@@ -147,7 +151,6 @@ function App() {
               variant="contained"
               onClick={() => {
                 dispatch({ type: "completeTask" });
-                dispatch({ type: "setMode", payload: "estimate" });
               }}
             >
               Mark task as complete
