@@ -8,4 +8,16 @@ describe("App", () => {
   it("renders", () => {
     render(<App />);
   });
+
+  it("asks for list of tasks", async () => {
+    render(<App />);
+
+    expect(await screen.findByText(/What would you like/)).toBeInTheDocument();
+  });
+
+  it("displays multiline input", async () => {
+    render(<App />);
+
+    expect(await screen.findByRole("textbox")).toBeInTheDocument();
+  });
 });
