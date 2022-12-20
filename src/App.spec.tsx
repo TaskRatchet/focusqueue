@@ -136,15 +136,56 @@ describe("App", () => {
   it("has reset button", async () => {
     render(<App />);
 
+    expect(await screen.findByText("Reset")).toBeInTheDocument();
+  });
+
+  it("resets timer when reset button clicked", async () => {
+    const { rerender } = render(<App />);
+
     const user = userEvent.setup({
       advanceTimers: () => vi.runOnlyPendingTimers(),
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:01");
-    await clickInstant("Start");
+    await user.type(screen.getByLabelText("Time"), "00:05");
 
-    expect(await screen.findByText("Reset")).toBeInTheDocument();
+    clickInstant("Start");
+
+    vi.runOnlyPendingTimers();
+    vi.advanceTimersByTime(1000);
+
+    rerender(<App />);
+
+    clickInstant("Reset");
+
+    rerender(<App />);
+
+    expect(screen.getByText("00:05")).toBeInTheDocument();
+  });
+
+  it("pauses timer on reset", async () => {
+    const { rerender } = render(<App />);
+
+    const user = userEvent.setup({
+      advanceTimers: () => vi.runOnlyPendingTimers(),
+    });
+
+    await user.type(screen.getByLabelText("Task"), "test");
+    await user.clear(screen.getByLabelText("Time"));
+    await user.type(screen.getByLabelText("Time"), "00:05");
+
+    clickInstant("Start");
+
+    vi.runOnlyPendingTimers();
+    vi.advanceTimersByTime(1000);
+
+    rerender(<App />);
+
+    clickInstant("Reset");
+
+    rerender(<App />);
+
+    expect(screen.getByText("Start")).toBeInTheDocument();
   });
 });

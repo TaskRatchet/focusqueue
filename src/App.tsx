@@ -30,7 +30,7 @@ function App() {
           setS(parseInt(s));
         }}
       />
-      <Stack>
+      <Stack direction={"row"} spacing={2}>
         <Button
           variant="contained"
           onClick={() => {
@@ -46,10 +46,22 @@ function App() {
               }
             }
           }}
+          sx={{ flexGrow: 1 }}
         >
           {countdown.isPaused || !countdown.isActive ? "Start" : "Pause"}
         </Button>
-        <Button variant="contained">Reset</Button>
+        <Button
+          variant="contained"
+          onClick={() => {
+            if (Number.isFinite(m) && Number.isFinite(s)) {
+              countdown.reset();
+              countdown.pause();
+            }
+          }}
+          sx={{ flexGrow: 1 }}
+        >
+          Reset
+        </Button>
       </Stack>
       <Typography variant="h1" align="center">
         {countdown.formatted}
