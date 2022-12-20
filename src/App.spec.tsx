@@ -1,7 +1,10 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { render, screen, act } from "@testing-library/react";
+import { render, screen, act, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
+import speak from "./lib/speak";
+
+vi.mock("./lib/speak");
 
 // Use this function instead of userEvent.click() to avoid
 // advancing timers before the click event is fired.
@@ -187,5 +190,26 @@ describe("App", () => {
     rerender(<App />);
 
     expect(screen.getByText("Start")).toBeInTheDocument();
+  });
+
+  it('says "done" when countdown completes', async () => {
+    render(<App />);
+
+    const user = userEvent.setup({
+      advanceTimers: () => vi.runOnlyPendingTimers(),
+    });
+
+    await user.type(screen.getByLabelText("Task"), "test");
+    await user.clear(screen.getByLabelText("Time"));
+    await user.type(screen.getByLabelText("Time"), "00:01");
+
+    clickInstant("Start");
+
+    vi.runOnlyPendingTimers();
+    vi.advanceTimersByTime(1000);
+
+    await waitFor(() => {
+      expect(speak).toBeCalled();
+    });
   });
 });

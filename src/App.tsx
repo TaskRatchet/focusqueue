@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import useCountdown from "@bradgarropy/use-countdown";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import speak from "./lib/speak";
 
 function App() {
   const [task, setTask] = useState("");
@@ -13,6 +14,7 @@ function App() {
   const countdown = useCountdown({
     minutes: m,
     seconds: s,
+    onCompleted: () => speak("Out of time"),
   });
 
   return (
