@@ -3,6 +3,15 @@ import { render, screen, act } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 
+const clickInstant = (name?: string | RegExp) =>
+  act(() =>
+    screen
+      .getByRole("button", {
+        name,
+      })
+      .click()
+  );
+
 describe("App", () => {
   beforeEach(() => {
     vi.useFakeTimers();
@@ -24,7 +33,7 @@ describe("App", () => {
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:01");
 
-    await act(() => screen.getByRole("button").click());
+    await clickInstant();
 
     expect(await screen.findByText("00:01")).toBeInTheDocument();
   });
@@ -69,18 +78,14 @@ describe("App", () => {
       advanceTimers: () => vi.runOnlyPendingTimers(),
     });
 
-    const b = screen.getByRole("button");
-
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:05");
-    await user.click(b);
+    await user.click(screen.getByRole("button"));
 
     vi.advanceTimersByTime(900);
 
-    // Avoid using userEvent here, since userEvent.click() will
-    // advance timers, which is not what we want.
-    await act(() => b.click());
+    await clickInstant();
 
     await screen.findByText("Start");
 
