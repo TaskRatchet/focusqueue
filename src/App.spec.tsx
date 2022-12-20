@@ -267,4 +267,142 @@ describe("App", () => {
 
     expect(await screen.findByText(/next task/i)).toBeInTheDocument();
   });
+
+  it("loads next task in estimation page if users marks task as complete", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Mark task as complete/i })
+    );
+
+    expect(await screen.findByText(/How long would/)).toBeInTheDocument();
+  });
+
+  it("returns to estimate page if user opts to keep working on current task", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Keep working on the same task/i })
+    );
+
+    expect(await screen.findByText(/How long would/)).toBeInTheDocument();
+  });
+
+  it("returns to estimate page if user opts to start a new task", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /next task/i }));
+
+    expect(await screen.findByText(/How long would/)).toBeInTheDocument();
+  });
+
+  it("removes task from queue when marked as completed", async () => {
+    render(<App />);
+
+    userEvent.setup();
+
+    await userEvent.type(screen.getByRole("textbox"), "test\nanother");
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /estimate/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: /session length/i,
+      }),
+      "1:30"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /finish session/i })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Mark task as complete/i })
+    );
+
+    expect(screen.queryByText(/test/i)).not.toBeInTheDocument();
+  });
 });

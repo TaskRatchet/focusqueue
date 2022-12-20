@@ -11,7 +11,8 @@ type Mode = "dump" | "estimate" | "countdown" | "review";
 type Action =
   | { type: "setTasks"; payload: string }
   | { type: "setMode"; payload: Mode }
-  | { type: "setSessionLength"; payload: string };
+  | { type: "setSessionLength"; payload: string }
+  | { type: "completeTask" };
 type State = {
   tasks: string[];
   currentTask: number;
@@ -42,6 +43,11 @@ function reducer(state: State, action: Action): State {
       return {
         ...state,
         sessionLength: action.payload,
+      };
+    case "completeTask":
+      return {
+        ...state,
+        currentTask: state.currentTask + 1,
       };
     default:
       return state;
@@ -83,7 +89,9 @@ function App() {
 
         {state.mode === "estimate" && (
           <Stack spacing={2}>
-            <Typography variant="h5">{state.tasks[0]}</Typography>
+            <Typography variant="h5">
+              {state.tasks[state.currentTask]}
+            </Typography>
 
             <p>How long do you estimate is remaining to complete this task?</p>
 
@@ -135,9 +143,31 @@ function App() {
 
         {state.mode === "review" && (
           <Stack spacing={2}>
-            <Button variant="contained">Mark task as complete</Button>
-            <Button variant="contained">Keep working on the same task</Button>
-            <Button variant="contained">Move on to the next task</Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                dispatch({ type: "completeTask" });
+                dispatch({ type: "setMode", payload: "estimate" });
+              }}
+            >
+              Mark task as complete
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                dispatch({ type: "setMode", payload: "estimate" });
+              }}
+            >
+              Keep working on the same task
+            </Button>
+            <Button
+              variant="contained"
+              onClick={() => {
+                dispatch({ type: "setMode", payload: "estimate" });
+              }}
+            >
+              Move on to the next task
+            </Button>
           </Stack>
         )}
       </Container>
