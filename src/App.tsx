@@ -30,24 +30,27 @@ function App() {
           setS(parseInt(s));
         }}
       />
-      <Button
-        variant="contained"
-        onClick={() => {
-          if (!countdown.isActive) {
-            if (Number.isFinite(m) && Number.isFinite(s)) {
-              countdown.reset();
-            }
-          } else {
-            if (countdown.isPaused) {
-              countdown.resume();
+      <Stack>
+        <Button
+          variant="contained"
+          onClick={() => {
+            if (!countdown.isActive) {
+              if (Number.isFinite(m) && Number.isFinite(s)) {
+                countdown.reset();
+              }
             } else {
-              countdown.pause();
+              if (countdown.isPaused) {
+                countdown.resume();
+              } else {
+                countdown.pause();
+              }
             }
-          }
-        }}
-      >
-        {countdown.isPaused ? "Start" : "Pause"}
-      </Button>
+          }}
+        >
+          {countdown.isPaused || !countdown.isActive ? "Start" : "Pause"}
+        </Button>
+        <Button variant="contained">Reset</Button>
+      </Stack>
       <Typography variant="h1" align="center">
         {countdown.formatted}
       </Typography>

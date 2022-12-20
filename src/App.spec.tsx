@@ -5,7 +5,7 @@ import userEvent from "@testing-library/user-event";
 
 // Use this function instead of userEvent.click() to avoid
 // advancing timers before the click event is fired.
-const clickInstant = (name?: string | RegExp) =>
+const clickInstant = (name: string | RegExp) =>
   act(() =>
     screen
       .getByRole("button", {
@@ -35,7 +35,7 @@ describe("App", () => {
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:01");
 
-    await clickInstant();
+    await clickInstant(/Start/);
 
     expect(await screen.findByText("00:01")).toBeInTheDocument();
   });
@@ -68,7 +68,7 @@ describe("App", () => {
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:01");
-    await user.click(screen.getByRole("button"));
+    await clickInstant("Start");
 
     expect(await screen.findByText("Pause")).toBeInTheDocument();
   });
@@ -83,11 +83,13 @@ describe("App", () => {
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:05");
-    await user.click(screen.getByRole("button"));
 
+    await clickInstant("Start");
+
+    vi.runOnlyPendingTimers();
     vi.advanceTimersByTime(900);
 
-    await clickInstant();
+    await clickInstant("Pause");
 
     await screen.findByText("Start");
 
@@ -108,10 +110,12 @@ describe("App", () => {
     await user.type(screen.getByLabelText("Time"), "00:05");
 
     // start timer
-    await user.click(screen.getByRole("button"));
+    await clickInstant("Start");
+
+    vi.runOnlyPendingTimers();
 
     // pause timer
-    await clickInstant();
+    await clickInstant("Pause");
 
     // confirm paused
     await screen.findByText("Start");
@@ -120,12 +124,27 @@ describe("App", () => {
     expect(screen.getByText("00:04")).toBeInTheDocument();
 
     // resume timer
-    await clickInstant();
+    await clickInstant("Start");
 
     // confirm resumed
     await screen.findByText("Pause");
     vi.advanceTimersByTime(1000);
     rerender(<App />);
     expect(screen.getByText("00:03")).toBeInTheDocument();
+  });
+
+  it("has reset button", async () => {
+    render(<App />);
+
+    const user = userEvent.setup({
+      advanceTimers: () => vi.runOnlyPendingTimers(),
+    });
+
+    await user.type(screen.getByLabelText("Task"), "test");
+    await user.clear(screen.getByLabelText("Time"));
+    await user.type(screen.getByLabelText("Time"), "00:01");
+    await clickInstant("Start");
+
+    expect(await screen.findByText("Reset")).toBeInTheDocument();
   });
 });
