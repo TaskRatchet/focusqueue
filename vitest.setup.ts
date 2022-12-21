@@ -13,6 +13,8 @@ expect.extend(m);
 
 vi.mock("axios");
 vi.mock("./src/lib/speak");
+vi.mock("./src/lib/firebase/app");
+vi.mock("./src/lib/firebase/auth");
 
 afterEach(() => {
   cleanup();
