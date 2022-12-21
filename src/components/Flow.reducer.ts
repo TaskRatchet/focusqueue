@@ -1,9 +1,9 @@
 import { useReducer } from "react";
 
-export type FlowMode = "dump" | "estimate" | "countdown" | "review";
+type Mode = "dump" | "estimate" | "countdown" | "review";
 type Action =
   | { type: "setTasks"; payload: string }
-  | { type: "setMode"; payload: FlowMode }
+  | { type: "setMode"; payload: Mode }
   | { type: "setSessionLength"; payload: string }
   | { type: "completeTask" }
   | { type: "nextTask" };
@@ -11,7 +11,7 @@ type State = {
   tasks: string[];
   currentTask: number;
   sessionLength: string;
-  mode: FlowMode;
+  mode: Mode;
 };
 
 const initialState: State = {
