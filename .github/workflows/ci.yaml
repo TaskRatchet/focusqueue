@@ -84,6 +84,8 @@ jobs:
           cache: "pnpm"
       - name: Install dependencies
         run: pnpm install
+      - name: Convert package.yaml to package.json
+        run: pnpm --package=yamljs dlx yaml2json package.yaml --save
       - name: Scan for unused dependencies
         run: pnpm dlx depcheck
   # lint:
