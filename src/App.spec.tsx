@@ -23,4 +23,33 @@ describe("App", () => {
     userEvent.click(loginButton);
     await waitFor(() => expect(loginWithGoogle).toHaveBeenCalled());
   });
+
+  it("does not show flow if user not logged in", async () => {
+    render(<App />);
+    await waitFor(() =>
+      expect(screen.queryByText(/what would you like/i)).not.toBeInTheDocument()
+    );
+  });
+
+  it("shows flow if user is logged in", async () => {
+    vi.mocked(loginWithGoogle).mockResolvedValue({} as any);
+
+    render(<App />);
+
+    const loginButton = await screen.findByText(/login with google/i);
+    userEvent.click(loginButton);
+
+    await waitFor(() =>
+      expect(screen.queryByText(/what would you like/i)).toBeInTheDocument()
+    );
+  });
+
+  it("does not show login button if logged in", async () => {
+    render(<App />);
+    const loginButton = await screen.findByText(/login with google/i);
+    userEvent.click(loginButton);
+    await waitFor(() => {
+      expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
+    });
+  });
 });

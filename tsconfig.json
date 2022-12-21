@@ -17,6 +17,6 @@
     "jsx": "react-jsx",
     "types": ["@testing-library/jest-dom"]
   },
-  "include": ["src", "./vite.d.ts"],
+  "include": ["src", "./vite.d.ts", "./vitest.setup.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
