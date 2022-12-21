@@ -2,3 +2,5 @@ node_modules/
 .vite
 .env
 package.json
+dist/
+tsconfig.node.tsbuildinfo
