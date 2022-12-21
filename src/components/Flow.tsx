@@ -3,14 +3,14 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import useFlowReducer from "./Flow.reducer";
+import useFlowReducer, { FlowMode } from "./Flow.reducer";
 
 function Flow() {
   const [state, dispatch] = useFlowReducer();
 
-  return (
-    <>
-      {state.mode === "dump" && (
+  switch (state.mode) {
+    case "dump":
+      return (
         <>
           <p>
             What would you like to work on today? Include one task per line.
@@ -35,9 +35,9 @@ function Flow() {
             Submit
           </Button>
         </>
-      )}
-
-      {state.mode === "estimate" && (
+      );
+    case "estimate":
+      return (
         <Stack spacing={2}>
           <Typography variant="h5">{state.tasks[state.currentTask]}</Typography>
 
@@ -70,9 +70,9 @@ function Flow() {
             Submit
           </Button>
         </Stack>
-      )}
-
-      {state.mode === "countdown" && (
+      );
+    case "countdown":
+      return (
         <>
           <Countdown
             taskDescription={state.tasks[0] || ""}
@@ -87,9 +87,9 @@ function Flow() {
             Finish session
           </Button>
         </>
-      )}
-
-      {state.mode === "review" && (
+      );
+    case "review":
+      return (
         <Stack spacing={2}>
           <Button
             variant="contained"
@@ -116,9 +116,10 @@ function Flow() {
             Move on to the next task
           </Button>
         </Stack>
-      )}
-    </>
-  );
+      );
+    default:
+      throw new Error("Invalid mode");
+  }
 }
 
 export default Flow;
