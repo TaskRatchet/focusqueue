@@ -1,12 +1,15 @@
 import { initializeApp } from "firebase/app";
+import getEnvValue from "../getEnvValue";
+
+const e = (k: string) => getEnvValue<string>(k);
 
 const firebaseConfig = {
-  apiKey: __FIREBASE_API_KEY__,
-  authDomain: __FIREBASE_AUTH_DOMAIN__,
-  projectId: __FIREBASE_PROJECT_ID__,
-  storageBucket: __FIREBASE_STORAGE_BUCKET__,
-  messagingSenderId: __FIREBASE_MESSAGING_SENDER_ID__,
-  appId: __FIREBASE_APP_ID__,
+  apiKey: e("VITE_FIREBASE_API_KEY"),
+  authDomain: e("VITE_FIREBASE_AUTH_DOMAIN"),
+  projectId: e("VITE_FIREBASE_PROJECT_ID"),
+  storageBucket: e("VITE_FIREBASE_STORAGE_BUCKET"),
+  messagingSenderId: e("VITE_FIREBASE_MESSAGING_SENDER_ID"),
+  appId: e("VITE_FIREBASE_APP_ID"),
 };
 
 const app = initializeApp(firebaseConfig);
