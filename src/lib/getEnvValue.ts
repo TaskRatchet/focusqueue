@@ -3,7 +3,7 @@ export default function getEnvValue<T extends unknown>(
   defaultValue?: T
 ): T {
   try {
-    const env = JSON.parse(__ENV__);
+    const env = __ENV__;
     if (key in env) {
       return env[key] as T;
     } else if (defaultValue !== undefined) {

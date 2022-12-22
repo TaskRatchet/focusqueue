@@ -4,15 +4,26 @@ import Flow from "./components/Flow";
 import Button from "@mui/material/Button";
 import { loginWithGoogle } from "./lib/firebase/auth";
 import { useState } from "react";
+import useLocalStorageState from "use-local-storage-state";
 
 function App() {
-  const [user, setUser] = useState<unknown>();
+  const [user, setUser] = useLocalStorageState("user");
 
   return (
     <CssBaseline>
       <Container maxWidth="sm">
         <>
-          {!user && (
+          {user ? (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                setUser(undefined);
+              }}
+            >
+              Logout
+            </Button>
+          ) : (
             <Button
               variant="contained"
               color="primary"

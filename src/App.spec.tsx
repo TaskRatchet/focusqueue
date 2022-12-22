@@ -52,4 +52,31 @@ describe("App", () => {
       expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
     });
   });
+
+  it("persists auth on refresh", async () => {
+    render(<App />);
+    const loginButton = await screen.findByText(/login with google/i);
+    userEvent.click(loginButton);
+    await waitFor(() => {
+      expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
+    });
+    render(<App />);
+    await waitFor(() => {
+      expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
+    });
+  });
+
+  it("lets user log out", async () => {
+    render(<App />);
+    const loginButton = await screen.findByText(/login with google/i);
+    userEvent.click(loginButton);
+    await waitFor(() => {
+      expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
+    });
+    const logoutButton = await screen.findByText(/logout/i);
+    userEvent.click(logoutButton);
+    await waitFor(() => {
+      expect(screen.queryByText(/login with google/i)).toBeInTheDocument();
+    });
+  });
 });
