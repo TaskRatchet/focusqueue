@@ -1,15 +1,8 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Flow from "./components/Flow";
-import Button from "@mui/material/Button";
-import {
-  loginWithGoogle,
-  useAuthenticatedUser,
-  logout,
-  loginWithGithub,
-} from "./lib/firebase/auth";
-import { useState } from "react";
-import useLocalStorageState from "use-local-storage-state";
+import { useAuthenticatedUser } from "./lib/firebase/auth";
+import AuthControls from "./components/AuthControls";
 
 function App() {
   const user = useAuthenticatedUser();
@@ -17,35 +10,8 @@ function App() {
   return (
     <CssBaseline>
       <Container maxWidth="sm">
-        <>
-          {user ? (
-            <Button variant="contained" color="primary" onClick={logout}>
-              Logout
-            </Button>
-          ) : (
-            <>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  loginWithGoogle();
-                }}
-              >
-                Login with Google
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => {
-                  loginWithGithub();
-                }}
-              >
-                Login with GitHub
-              </Button>
-            </>
-          )}
-          {user && <Flow />}
-        </>
+        <AuthControls />
+        {user && <Flow />}
       </Container>
     </CssBaseline>
   );
