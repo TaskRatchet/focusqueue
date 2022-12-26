@@ -1,13 +1,13 @@
 import { useReducer } from "react";
 
 type Mode = "dump" | "estimate" | "countdown" | "review";
-type Action =
+export type Action =
   | { type: "setTasks"; payload: string }
   | { type: "setMode"; payload: Mode }
   | { type: "setSessionLength"; payload: string }
   | { type: "completeTask" }
   | { type: "nextTask" };
-type State = {
+export type State = {
   tasks: string[];
   currentTask: number;
   sessionLength: string;

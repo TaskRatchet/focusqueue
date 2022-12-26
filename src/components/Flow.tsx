@@ -4,38 +4,14 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import useFlowReducer from "./Flow.reducer";
+import Dump from "./Dump";
 
 function Flow() {
   const [state, dispatch] = useFlowReducer();
 
   switch (state.mode) {
     case "dump":
-      return (
-        <>
-          <p>
-            What would you like to work on today? Include one task per line.
-          </p>
-          <TextField
-            id="tasks"
-            label="Tasks"
-            variant="outlined"
-            multiline
-            fullWidth
-            value={state.tasks.join("\n")}
-            onChange={(e) =>
-              dispatch({ type: "setTasks", payload: e.target.value })
-            }
-          />
-          <Button
-            variant="contained"
-            onClick={() => {
-              dispatch({ type: "setMode", payload: "estimate" });
-            }}
-          >
-            Submit
-          </Button>
-        </>
-      );
+      return <Dump state={state} dispatch={dispatch} />;
     case "estimate":
       return (
         <Stack spacing={2}>
