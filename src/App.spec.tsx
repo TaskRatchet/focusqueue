@@ -3,6 +3,7 @@ import { render, screen, act, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 import {
+  loginWithGithub,
   loginWithGoogle,
   logout,
   useAuthenticatedUser,
@@ -11,6 +12,10 @@ import {
 vi.mock("./lib/speak");
 
 describe("App", () => {
+  beforeEach(() => {
+    vi.mocked(useAuthenticatedUser).mockReset();
+  });
+
   it("renders", () => {
     render(<App />);
   });
@@ -46,6 +51,8 @@ describe("App", () => {
   });
 
   it("does not show login button if logged in", async () => {
+    vi.mocked(useAuthenticatedUser).mockReturnValue({} as any);
+
     render(<App />);
 
     await waitFor(() => {
@@ -63,5 +70,15 @@ describe("App", () => {
     userEvent.click(logoutButton);
 
     await waitFor(() => expect(logout).toBeCalled());
+  });
+
+  it("lets user log in via github", async () => {
+    render(<App />);
+
+    const githubButton = await screen.findByText(/github/i);
+
+    userEvent.click(githubButton);
+
+    await waitFor(() => expect(loginWithGithub).toBeCalled());
   });
 });

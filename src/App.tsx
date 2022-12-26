@@ -6,6 +6,7 @@ import {
   loginWithGoogle,
   useAuthenticatedUser,
   logout,
+  loginWithGithub,
 } from "./lib/firebase/auth";
 import { useState } from "react";
 import useLocalStorageState from "use-local-storage-state";
@@ -22,15 +23,26 @@ function App() {
               Logout
             </Button>
           ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                loginWithGoogle();
-              }}
-            >
-              Login with Google
-            </Button>
+            <>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  loginWithGoogle();
+                }}
+              >
+                Login with Google
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => {
+                  loginWithGithub();
+                }}
+              >
+                Login with GitHub
+              </Button>
+            </>
           )}
           {user && <Flow />}
         </>

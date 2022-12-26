@@ -1,5 +1,6 @@
 import {
   getAuth,
+  GithubAuthProvider,
   GoogleAuthProvider,
   onAuthStateChanged,
   signInWithPopup,
@@ -13,6 +14,18 @@ export async function loginWithGoogle() {
   const provider = new GoogleAuthProvider();
   const result = await signInWithPopup(auth, provider);
   const credential = GoogleAuthProvider.credentialFromResult(result);
+
+  return {
+    ...result,
+    credential,
+  };
+}
+
+export async function loginWithGithub() {
+  const auth = getAuth(app);
+  const provider = new GithubAuthProvider();
+  const result = await signInWithPopup(auth, provider);
+  const credential = GithubAuthProvider.credentialFromResult(result);
 
   return {
     ...result,
