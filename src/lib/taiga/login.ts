@@ -10,9 +10,16 @@ export default async function login(
     type: "normal",
   });
 
-  if (!response.data.auth_token) {
+  const d: unknown = response.data;
+
+  if (
+    typeof d !== "object" ||
+    d === null ||
+    !("auth_token" in d) ||
+    typeof d.auth_token !== "string"
+  ) {
     throw new Error("Failure to login");
   }
 
-  return response.data.auth_token;
+  return d.auth_token;
 }

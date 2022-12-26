@@ -21,6 +21,10 @@ const initialState: State = {
   mode: "dump",
 };
 
+const filterTasks = (tasks: string[], delId: number) => {
+  return tasks.filter((_, index) => index !== delId);
+};
+
 function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "setTasks":
@@ -39,25 +43,21 @@ function reducer(state: State, action: Action): State {
         sessionLength: action.payload,
       };
     case "completeTask":
-      // Define a new list of tasks that excludes the current task.
-      const tasks = state.tasks.filter(
-        (_, index) => index !== state.currentTask
-      );
-
-      const nextMode = tasks.length === 0 ? "dump" : "estimate";
-
       return {
         ...state,
-        tasks,
-        mode: nextMode,
+        tasks: filterTasks(state.tasks, state.currentTask),
+        mode:
+          filterTasks(state.tasks, state.currentTask).length === 0
+            ? "dump"
+            : "estimate",
       };
     case "nextTask":
-      const isLastTask = state.currentTask === state.tasks.length - 1;
-      const index = isLastTask ? 0 : state.currentTask + 1;
-
       return {
         ...state,
-        currentTask: index,
+        currentTask:
+          state.currentTask === state.tasks.length - 1
+            ? 0
+            : state.currentTask + 1,
         mode: state.tasks.length < 2 ? "dump" : "estimate",
       };
     default:

@@ -4,9 +4,15 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import useFlowReducer from "./Flow.reducer";
+import React from "react";
+import { useTasks, updateTask } from "../lib/firebase/firestore";
+import useUser from "../lib/useUser";
+import { Timestamp } from "firebase/firestore";
 
 function Flow() {
+  const [user] = useUser();
   const [state, dispatch] = useFlowReducer();
+  const tasks = useTasks(user ? user.uid : undefined);
 
   switch (state.mode) {
     case "dump":
@@ -39,7 +45,7 @@ function Flow() {
     case "estimate":
       return (
         <Stack spacing={2}>
-          <Typography variant="h5">{state.tasks[state.currentTask]}</Typography>
+          <Typography variant="h5">{tasks[state.currentTask].title}</Typography>
 
           <p>How long do you estimate is remaining to complete this task?</p>
 
@@ -75,7 +81,7 @@ function Flow() {
       return (
         <>
           <Countdown
-            taskDescription={state.tasks[0] || ""}
+            taskDescription={tasks[0].title}
             sessionLength={state.sessionLength}
           />
           <Button
@@ -95,6 +101,10 @@ function Flow() {
             variant="contained"
             onClick={() => {
               dispatch({ type: "completeTask" });
+              if (!user) throw new Error("User not logged in");
+              void updateTask(user.uid, tasks[state.currentTask].id, {
+                completed: Timestamp.now(),
+              });
             }}
           >
             Mark task as complete

@@ -7,7 +7,7 @@ import { cleanup } from "@testing-library/react";
 import { loginWithGoogle } from "./src/lib/firebase/auth";
 import getEnvValue from "./src/lib/getEnvValue";
 
-const m: TestingLibraryMatchers<string, void> = matchers;
+const m: TestingLibraryMatchers<string, void> = matchers as any;
 
 // extends Vitest's expect method with methods from react-testing-library
 expect.extend(m);
@@ -17,6 +17,7 @@ vi.mock("./src/lib/speak");
 vi.mock("./src/lib/firebase/app");
 vi.mock("./src/lib/firebase/auth");
 vi.mock("./src/lib/getEnvValue");
+vi.mock("./src/lib/firebase/firestore");
 
 beforeEach(() => {
   vi.mocked(loginWithGoogle).mockResolvedValue({} as any);

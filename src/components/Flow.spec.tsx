@@ -1,13 +1,29 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi, beforeEach } from "vitest";
+import { render, screen } from "@testing-library/react";
 import App from "./Flow";
 import userEvent from "@testing-library/user-event";
+import React from "react";
+import { useTasks, updateTask } from "../lib/firebase/firestore";
+import { Timestamp } from "firebase/firestore";
+import useUser from "../lib/useUser";
 
 vi.mock("../lib/speak");
+vi.mock("../lib/useUser");
 
 describe("Flow", () => {
-  it("renders", () => {
-    render(<App />);
+  beforeEach(() => {
+    vi.mocked(useTasks).mockReturnValue([
+      { title: "test", id: "the_task_id" } as any,
+      { title: "another", id: "another_task_id" } as any,
+    ]);
+    vi.mocked(useUser).mockReturnValue([
+      {
+        uid: "the_user_id",
+      },
+      () => {
+        /* noop */
+      },
+    ] as any);
   });
 
   it("asks for list of tasks", async () => {
@@ -52,11 +68,12 @@ describe("Flow", () => {
   });
 
   it("displays text of task to estimate", async () => {
+    vi.mocked(useTasks).mockReturnValue([{ title: "test" } as any]);
+
     render(<App />);
 
     userEvent.setup();
 
-    await userEvent.type(screen.getByRole("textbox"), "test");
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     expect(await screen.findByText(/test/)).toBeInTheDocument();
@@ -403,7 +420,9 @@ describe("Flow", () => {
       screen.getByRole("button", { name: /Mark task as complete/i })
     );
 
-    expect(screen.queryByText(/test/i)).not.toBeInTheDocument();
+    expect(updateTask).toBeCalledWith("the_user_id", "the_task_id", {
+      completed: expect.any(Timestamp),
+    });
   });
 
   it("returns user to dump page if all tasks completed", async () => {
@@ -609,4 +628,20 @@ describe("Flow", () => {
 
     expect(await screen.findByText(/What would you like/i)).toBeInTheDocument();
   });
+
+  it("uses tasks stored in firestore", async () => {
+    vi.mocked(useTasks).mockReturnValue([
+      {
+        title: "test",
+      } as any,
+    ]);
+
+    render(<App />);
+
+    await userEvent.click(screen.getByRole("button", { name: /submit/i }));
+
+    expect(await screen.findByText(/test/i)).toBeInTheDocument();
+  });
+
+  // it saves new tasks to firestore
 });

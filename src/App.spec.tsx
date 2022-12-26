@@ -1,8 +1,9 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 import { loginWithGoogle } from "./lib/firebase/auth";
+import React from "react";
 
 vi.mock("./lib/speak");
 
@@ -20,7 +21,7 @@ describe("App", () => {
     render(<App />);
     userEvent.setup();
     const loginButton = await screen.findByText(/login with google/i);
-    userEvent.click(loginButton);
+    await userEvent.click(loginButton);
     await waitFor(() => expect(loginWithGoogle).toHaveBeenCalled());
   });
 
@@ -37,7 +38,8 @@ describe("App", () => {
     render(<App />);
 
     const loginButton = await screen.findByText(/login with google/i);
-    userEvent.click(loginButton);
+
+    await userEvent.click(loginButton);
 
     await waitFor(() =>
       expect(screen.queryByText(/what would you like/i)).toBeInTheDocument()
@@ -47,7 +49,7 @@ describe("App", () => {
   it("does not show login button if logged in", async () => {
     render(<App />);
     const loginButton = await screen.findByText(/login with google/i);
-    userEvent.click(loginButton);
+    await userEvent.click(loginButton);
     await waitFor(() => {
       expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
     });
@@ -56,7 +58,7 @@ describe("App", () => {
   it("persists auth on refresh", async () => {
     render(<App />);
     const loginButton = await screen.findByText(/login with google/i);
-    userEvent.click(loginButton);
+    await userEvent.click(loginButton);
     await waitFor(() => {
       expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
     });
@@ -69,12 +71,12 @@ describe("App", () => {
   it("lets user log out", async () => {
     render(<App />);
     const loginButton = await screen.findByText(/login with google/i);
-    userEvent.click(loginButton);
+    await userEvent.click(loginButton);
     await waitFor(() => {
       expect(screen.queryByText(/login with google/i)).not.toBeInTheDocument();
     });
     const logoutButton = await screen.findByText(/logout/i);
-    userEvent.click(logoutButton);
+    await userEvent.click(logoutButton);
     await waitFor(() => {
       expect(screen.queryByText(/login with google/i)).toBeInTheDocument();
     });

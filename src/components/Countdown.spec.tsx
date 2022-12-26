@@ -3,6 +3,7 @@ import { render, screen, act, waitFor } from "@testing-library/react";
 import Countdown from "./Countdown";
 import userEvent from "@testing-library/user-event";
 import speak from "../lib/speak";
+import React from "react";
 
 vi.mock("../lib/speak");
 
@@ -153,14 +154,14 @@ describe("Countdown", () => {
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:05");
 
-    clickInstant("Start");
+    await clickInstant("Start");
 
     vi.runOnlyPendingTimers();
     vi.advanceTimersByTime(1000);
 
     rerender(<Countdown />);
 
-    clickInstant("Reset");
+    await clickInstant("Reset");
 
     rerender(<Countdown />);
 
@@ -178,14 +179,14 @@ describe("Countdown", () => {
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:05");
 
-    clickInstant("Start");
+    await clickInstant("Start");
 
     vi.runOnlyPendingTimers();
     vi.advanceTimersByTime(1000);
 
     rerender(<Countdown />);
 
-    clickInstant("Reset");
+    await clickInstant("Reset");
 
     rerender(<Countdown />);
 
@@ -203,7 +204,7 @@ describe("Countdown", () => {
     await user.clear(screen.getByLabelText("Time"));
     await user.type(screen.getByLabelText("Time"), "00:01");
 
-    clickInstant("Start");
+    await clickInstant("Start");
 
     vi.runOnlyPendingTimers();
     vi.advanceTimersByTime(1000);

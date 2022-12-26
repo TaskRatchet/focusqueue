@@ -1,4 +1,5 @@
 import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { useMemo } from "react";
 import app from "./app";
 
 export async function loginWithGoogle() {
@@ -11,4 +12,10 @@ export async function loginWithGoogle() {
     ...result,
     credential,
   };
+}
+
+// TODO
+export function useUser() {
+  const auth = useMemo(() => getAuth(app), []);
+  return auth.currentUser;
 }

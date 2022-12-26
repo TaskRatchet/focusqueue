@@ -1,6 +1,8 @@
 import axios from "axios";
 
-export default async function getUserStoriesList(token: string) {
+export default async function getUserStoriesList(
+  token: string
+): Promise<unknown> {
   const response = await axios.get("https://api.taiga.io/api/v1/userstories", {
     headers: {
       "Content-Type": "application/json",
@@ -12,5 +14,5 @@ export default async function getUserStoriesList(token: string) {
     throw new Error("Failure to get userstories list");
   }
 
-  return response.data;
+  return response.data as unknown;
 }
