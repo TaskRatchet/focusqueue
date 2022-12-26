@@ -5,6 +5,7 @@ import {
   logout,
   loginWithGithub,
 } from "../lib/firebase/auth";
+import Stack from "@mui/material/Stack";
 
 export default function AuthControls() {
   const user = useAuthenticatedUser();
@@ -14,7 +15,7 @@ export default function AuthControls() {
       Logout
     </Button>
   ) : (
-    <>
+    <Stack spacing={2}>
       <Button
         variant="contained"
         color="primary"
@@ -33,6 +34,6 @@ export default function AuthControls() {
       >
         Login with GitHub
       </Button>
-    </>
+    </Stack>
   );
 }
