@@ -14,3 +14,36 @@ export function authenticate() {
 
   window.location.href = url.toString();
 }
+
+export async function getCards(token: string) {
+  const url = new URL("https://api.trello.com/1/members/me/cards");
+
+  url.searchParams.set("fields", "id,name");
+  url.searchParams.set("token", token);
+  url.searchParams.set("key", getEnvValue("VITE_TRELLO_API_KEY"));
+
+  const res = await fetch(url.toString());
+  const json = await res.json();
+
+  console.log({ res, cards: json });
+
+  return json;
+}
+
+export async function getBoards(token: string) {
+  const url = new URL("https://api.trello.com/1/members/me/boards");
+
+  url.searchParams.set("fields", "id,name");
+  url.searchParams.set("token", token);
+  url.searchParams.set("key", getEnvValue("VITE_TRELLO_API_KEY"));
+
+  const res = await fetch(url.toString());
+  const json = await res.json();
+
+  console.log({
+    res,
+    boards: json,
+  });
+
+  return json;
+}
