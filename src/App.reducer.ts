@@ -1,12 +1,14 @@
 import { useReducer } from "react";
 
 type Mode = "dump" | "estimate" | "countdown" | "review";
+
 export type Action =
   | { type: "setTasks"; payload: string }
   | { type: "setMode"; payload: Mode }
   | { type: "setSessionLength"; payload: string }
   | { type: "completeTask" }
   | { type: "nextTask" };
+
 export type State = {
   tasks: string[];
   currentTask: number;
@@ -65,6 +67,6 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-export default function useFlowReducer() {
+export default function useAppReducer() {
   return useReducer(reducer, initialState);
 }

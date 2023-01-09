@@ -3,16 +3,23 @@ import Container from "@mui/material/Container";
 import Flow from "./components/Flow";
 import { useAuthenticatedUser } from "./lib/firebase/auth";
 import AuthControls from "./components/AuthControls";
+import useAppReducer, { initialState } from "./App.reducer";
+import { createContext } from "react";
+
+export const AppContext = createContext(initialState);
 
 function App() {
   const user = useAuthenticatedUser();
+  const r = useAppReducer();
 
   return (
     <CssBaseline>
-      <Container maxWidth="sm">
-        <AuthControls />
-        {user && <Flow />}
-      </Container>
+      <AppContext.Provider value={r}>
+        <Container maxWidth="sm">
+          <AuthControls />
+          {user && <Flow />}
+        </Container>
+      </AppContext.Provider>
     </CssBaseline>
   );
 }

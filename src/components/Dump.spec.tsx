@@ -176,6 +176,33 @@ describe("Dump", () => {
 
     await waitFor(() => expect(getBoards).toHaveBeenCalledWith("123"));
   });
+
+  // it("lists user boards", async () => {
+  //   vi.mocked(useMe).mockReturnValue({
+  //     trelloToken: "123",
+  //   } as any);
+
+  //   vi.mocked(getBoards).mockResolvedValue([
+  //     {
+  //       id: "1",
+  //       name: "board1",
+  //     },
+  //   ]);
+
+  //   render(<Dump state={state} dispatch={dispatch} />);
+
+  //   const user = userEvent.setup();
+
+  //   const trelloButton = await screen.findByText(/trello/i);
+
+  //   user.click(trelloButton);
+
+  //   await waitFor(() => expect(getBoards).toHaveBeenCalledWith("123"));
+
+  //   await waitFor(() => {
+  //     expect(screen.getByText(/board1/i)).toBeInTheDocument();
+  //   });
+  // });
 });
 
 // pops trello import modal
