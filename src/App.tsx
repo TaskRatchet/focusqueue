@@ -3,10 +3,13 @@ import Container from "@mui/material/Container";
 import Flow from "./components/Flow";
 import { useAuthenticatedUser } from "./lib/firebase/auth";
 import AuthControls from "./components/AuthControls";
-import useAppReducer, { initialState } from "./App.reducer";
-import { createContext } from "react";
+import useAppReducer, { Action, initialState, State } from "./App.reducer";
+import { createContext, Dispatch } from "react";
 
-export const AppContext = createContext(initialState);
+export const AppContext = createContext<[State, Dispatch<Action>]>([
+  initialState,
+  () => {},
+]);
 
 function App() {
   const user = useAuthenticatedUser();

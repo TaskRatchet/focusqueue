@@ -16,7 +16,7 @@ export type State = {
   mode: Mode;
 };
 
-const initialState: State = {
+export const initialState: State = {
   tasks: [],
   currentTask: 0,
   sessionLength: "",
