@@ -4,6 +4,7 @@ import { authenticate, getBoards, getCards } from "../lib/trello";
 import { useEffect } from "react";
 import { updateMe, useMe } from "../lib/firebase/firestore";
 import { State, Action } from "../App.reducer";
+import TrelloDialog from "./TrelloDialog";
 
 export default function Dump({
   state,
@@ -42,25 +43,7 @@ export default function Dump({
         }
       />
 
-      <Button
-        variant="contained"
-        onClick={() => {
-          if (typeof me?.trelloToken === "string") {
-            getBoards(me.trelloToken);
-            getCards(me.trelloToken).then((cards) => {
-              const tasks = cards.map((card: { name: string }) => card.name);
-              dispatch({
-                type: "setTasks",
-                payload: state.tasks.join("\n") + "\n" + tasks.join("\n"),
-              });
-            });
-          } else {
-            authenticate();
-          }
-        }}
-      >
-        Import from Trello
-      </Button>
+      <TrelloDialog />
 
       <Button
         variant="contained"

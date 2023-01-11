@@ -7,7 +7,8 @@ export type Action =
   | { type: "setMode"; payload: Mode }
   | { type: "setSessionLength"; payload: string }
   | { type: "completeTask" }
-  | { type: "nextTask" };
+  | { type: "nextTask" }
+  | { type: "appendTasks"; payload: string[] };
 
 export type State = {
   tasks: string[];
@@ -62,6 +63,8 @@ export function reducer(state: State, action: Action): State {
         currentTask: index,
         mode: state.tasks.length < 2 ? "dump" : "estimate",
       };
+    case "appendTasks":
+      return { ...state, tasks: [...state.tasks, ...action.payload] };
     default:
       return state;
   }

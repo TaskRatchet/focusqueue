@@ -5,6 +5,9 @@ import { useAuthenticatedUser } from "./lib/firebase/auth";
 import AuthControls from "./components/AuthControls";
 import { Action, initialState, reducer, State } from "./App.reducer";
 import { createContext, Dispatch, useReducer } from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 export const AppContext = createContext<[State, Dispatch<Action>]>([
   initialState,
@@ -19,12 +22,14 @@ function App() {
 
   return (
     <CssBaseline>
-      <AppContext.Provider value={r}>
-        <Container maxWidth="sm">
-          <AuthControls />
-          {user && <Flow />}
-        </Container>
-      </AppContext.Provider>
+      <QueryClientProvider client={queryClient}>
+        <AppContext.Provider value={r}>
+          <Container maxWidth="sm">
+            <AuthControls />
+            {user && <Flow />}
+          </Container>
+        </AppContext.Provider>
+      </QueryClientProvider>
     </CssBaseline>
   );
 }
