@@ -1,7 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import Dump from "./Dump";
-import { State } from "./Flow.reducer";
+import { State } from "../App.reducer";
 import userEvent from "@testing-library/user-event";
 import { authenticate, getCards, getBoards } from "../lib/trello";
 import { updateMe } from "../lib/firebase/firestore";

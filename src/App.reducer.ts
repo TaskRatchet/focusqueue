@@ -23,7 +23,7 @@ export const initialState: State = {
   mode: "dump",
 };
 
-function reducer(state: State, action: Action): State {
+export function reducer(state: State, action: Action): State {
   switch (action.type) {
     case "setTasks":
       return {
@@ -65,8 +65,4 @@ function reducer(state: State, action: Action): State {
     default:
       return state;
   }
-}
-
-export default function useAppReducer() {
-  return useReducer(reducer, initialState);
 }

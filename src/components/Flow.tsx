@@ -4,10 +4,11 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Dump from "./Dump";
-import useAppReducer from "../App.reducer";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 function Flow() {
-  const [state, dispatch] = useAppReducer();
+  const [state, dispatch] = useContext(AppContext);
 
   switch (state.mode) {
     case "dump":

@@ -1,9 +1,9 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { State, Action } from "./Flow.reducer";
 import { authenticate, getBoards, getCards } from "../lib/trello";
 import { useEffect } from "react";
 import { updateMe, useMe } from "../lib/firebase/firestore";
+import { State, Action } from "../App.reducer";
 
 export default function Dump({
   state,
