@@ -6,6 +6,7 @@ import userEvent from "@testing-library/user-event";
 import { authenticate, getCards, getBoards } from "../lib/trello";
 import { updateMe } from "../lib/firebase/firestore";
 import { useMe } from "../lib/firebase/firestore";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const state: State = {
   tasks: ["task1", "task2"],
@@ -16,20 +17,30 @@ const state: State = {
 
 const dispatch = vi.fn();
 
+const renderComponent = () => {
+  const queryClient = new QueryClient();
+
+  return render(
+    <QueryClientProvider client={queryClient}>
+      <Dump state={state} dispatch={dispatch} />
+    </QueryClientProvider>
+  );
+};
+
 describe("Dump", () => {
   beforeEach(() => {
     vi.mocked(useMe).mockReset();
+    vi.mocked(getBoards).mockResolvedValue([]);
   });
 
   it("has trello button", async () => {
-    render(<Dump state={state} dispatch={dispatch} />);
+    renderComponent();
 
     await screen.findByText(/trello/i);
   });
 
-  // authenticates user with trello
   it("authenticates user with trello", async () => {
-    render(<Dump state={state} dispatch={dispatch} />);
+    renderComponent();
 
     const user = userEvent.setup();
 
@@ -40,7 +51,6 @@ describe("Dump", () => {
     await waitFor(() => expect(authenticate).toHaveBeenCalled());
   });
 
-  // stores trello token in firebase
   it("stores trello token in firebase", async () => {
     // set the token
     // http://localhost:5173/#token=123
@@ -50,35 +60,17 @@ describe("Dump", () => {
       },
     });
 
-    render(<Dump state={state} dispatch={dispatch} />);
+    renderComponent();
 
     await waitFor(() => expect(updateMe).toHaveBeenCalled());
   });
 
-  // imports trello tasks into flow
-  it("imports trello tasks into flow", async () => {
-    vi.mocked(useMe).mockReturnValue({
-      trelloToken: "123",
-    } as any);
-
-    render(<Dump state={state} dispatch={dispatch} />);
-
-    const user = userEvent.setup();
-
-    const trelloButton = await screen.findByText(/trello/i);
-
-    user.click(trelloButton);
-
-    await waitFor(() => expect(getCards).toHaveBeenCalledWith("123"));
-  });
-
-  // does not authenticate user with trello if already authenticated
   it("does not authenticate user with trello if already authenticated", async () => {
     vi.mocked(useMe).mockReturnValue({
       trelloToken: "123",
     } as any);
 
-    render(<Dump state={state} dispatch={dispatch} />);
+    renderComponent();
 
     const user = userEvent.setup();
 
@@ -86,12 +78,9 @@ describe("Dump", () => {
 
     user.click(trelloButton);
 
-    await waitFor(() => expect(getCards).toHaveBeenCalledWith("123"));
-
     expect(authenticate).not.toHaveBeenCalled();
   });
 
-  // does not store trello token in firebase if same as stored token
   it("does not store trello token in firebase if same as stored token", async () => {
     vi.mocked(useMe).mockReturnValue({
       trelloToken: "123",
@@ -104,47 +93,15 @@ describe("Dump", () => {
       },
     });
 
-    render(<Dump state={state} dispatch={dispatch} />);
+    renderComponent();
 
     const user = userEvent.setup();
 
     const trelloButton = await screen.findByText(/trello/i);
 
     user.click(trelloButton);
-
-    await waitFor(() => expect(getCards).toHaveBeenCalledWith("123"));
 
     expect(updateMe).not.toHaveBeenCalled();
-  });
-
-  it("appends Trello tasks to input", async () => {
-    vi.mocked(useMe).mockReturnValue({
-      trelloToken: "123",
-    } as any);
-
-    vi.mocked(getCards).mockResolvedValue([
-      {
-        id: "1",
-        name: "trello_task",
-      },
-    ]);
-
-    render(<Dump state={state} dispatch={dispatch} />);
-
-    const user = userEvent.setup();
-
-    const trelloButton = await screen.findByText(/trello/i);
-
-    user.click(trelloButton);
-
-    await waitFor(() => expect(getCards).toHaveBeenCalledWith("123"));
-
-    await waitFor(() => {
-      expect(dispatch).toBeCalledWith({
-        type: "setTasks",
-        payload: expect.stringContaining("trello_task"),
-      });
-    });
   });
 
   it("ignores non-token hashes", async () => {
@@ -154,7 +111,7 @@ describe("Dump", () => {
       },
     });
 
-    render(<Dump state={state} dispatch={dispatch} />);
+    renderComponent();
 
     await screen.findByText(/trello/i);
 
@@ -166,7 +123,7 @@ describe("Dump", () => {
       trelloToken: "123",
     } as any);
 
-    render(<Dump state={state} dispatch={dispatch} />);
+    renderComponent();
 
     const user = userEvent.setup();
 

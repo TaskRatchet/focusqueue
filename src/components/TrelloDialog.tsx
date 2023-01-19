@@ -5,7 +5,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
-import { getBoards, getCards } from "../lib/trello";
+import { authenticate, getBoards, getCards } from "../lib/trello";
 import { useMe } from "../lib/firebase/firestore";
 import { useQuery } from "@tanstack/react-query";
 import FormGroup from "@mui/material/FormGroup";
@@ -28,7 +28,7 @@ export default function TrelloDialog() {
   );
 
   if (data === undefined) {
-    throw new Error("Unreachable");
+    return null;
   }
 
   return (
@@ -36,13 +36,16 @@ export default function TrelloDialog() {
       <Button
         variant="contained"
         onClick={() => {
+          if (typeof me?.trelloToken !== "string") {
+            authenticate();
+          }
           setOpen(true);
         }}
       >
         Import from Trello
       </Button>
       <Dialog open={open} onClose={() => setOpen(false)}>
-        <DialogTitle>Import from Trello</DialogTitle>
+        <DialogTitle>Select Boards to Import</DialogTitle>
         <DialogContent>
           <FormGroup>
             {data.map((board) => (
