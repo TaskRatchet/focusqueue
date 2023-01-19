@@ -1,11 +1,16 @@
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, act, waitFor } from "@testing-library/react";
-import App from "./Flow";
+import App from "./App";
 import userEvent from "@testing-library/user-event";
+import { useAuthenticatedUser } from "./lib/firebase/auth";
 
 vi.mock("../lib/speak");
 
 describe("Flow", () => {
+  beforeEach(() => {
+    vi.mocked(useAuthenticatedUser).mockReturnValue({} as any);
+  });
+
   it("renders", () => {
     render(<App />);
   });
@@ -574,7 +579,7 @@ describe("Flow", () => {
     await userEvent.click(screen.getByRole("button", { name: /submit/i }));
 
     await userEvent.type(
-      screen.getByRole("textbox", {
+      await screen.findByRole("textbox", {
         name: /estimate/i,
       }),
       "1:30"

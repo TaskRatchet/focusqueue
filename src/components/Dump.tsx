@@ -1,6 +1,10 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { State, Action } from "./Flow.reducer";
+import { authenticate, getBoards, getCards } from "../lib/trello";
+import { useEffect } from "react";
+import { updateMe, useMe } from "../lib/firebase/firestore";
+import { State, Action } from "../App.reducer";
+import TrelloDialog from "./TrelloDialog";
 
 export default function Dump({
   state,
@@ -9,9 +13,24 @@ export default function Dump({
   state: State;
   dispatch: React.Dispatch<Action>;
 }) {
+  const me = useMe();
+
+  useEffect(() => {
+    const hash = window.location.hash;
+
+    if (!hash) return;
+
+    const token = hash.match(/token=(.*)/)?.[1];
+
+    if (token && token !== me?.trelloToken) {
+      updateMe({ trelloToken: token });
+    }
+  }, []);
+
   return (
     <>
       <p>What would you like to work on today? Include one task per line.</p>
+
       <TextField
         id="tasks"
         label="Tasks"
@@ -23,6 +42,9 @@ export default function Dump({
           dispatch({ type: "setTasks", payload: e.target.value })
         }
       />
+
+      <TrelloDialog />
+
       <Button
         variant="contained"
         onClick={() => {

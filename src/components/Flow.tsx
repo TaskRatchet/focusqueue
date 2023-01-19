@@ -3,11 +3,12 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
-import useFlowReducer from "./Flow.reducer";
 import Dump from "./Dump";
+import { useContext } from "react";
+import { AppContext } from "../App";
 
 function Flow() {
-  const [state, dispatch] = useFlowReducer();
+  const [state, dispatch] = useContext(AppContext);
 
   switch (state.mode) {
     case "dump":
