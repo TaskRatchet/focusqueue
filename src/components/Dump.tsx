@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { updateMe, useMe } from "../lib/firebase/firestore";
 import { State, Action } from "../App.reducer";
 import TrelloDialog from "./TrelloDialog";
+import { Stack } from "@mui/material";
 
 export default function Dump({
   state,
@@ -28,7 +29,7 @@ export default function Dump({
   }, []);
 
   return (
-    <>
+    <Stack spacing={2}>
       <p>What would you like to work on today? Include one task per line.</p>
 
       <TextField
@@ -43,16 +44,18 @@ export default function Dump({
         }
       />
 
-      <TrelloDialog />
+      <Stack direction="row" spacing={2}>
+        <TrelloDialog />
 
-      <Button
-        variant="contained"
-        onClick={() => {
-          dispatch({ type: "setMode", payload: "estimate" });
-        }}
-      >
-        Submit
-      </Button>
-    </>
+        <Button
+          variant="contained"
+          onClick={() => {
+            dispatch({ type: "setMode", payload: "estimate" });
+          }}
+        >
+          Submit
+        </Button>
+      </Stack>
+    </Stack>
   );
 }
