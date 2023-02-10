@@ -11,6 +11,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Authenticated from "./components/Authenticated";
+import Settings from "./components/Settings";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,14 @@ const router = createBrowserRouter([
     element: (
       <Authenticated>
         <Flow />
+      </Authenticated>
+    ),
+  },
+  {
+    path: "/settings",
+    element: (
+      <Authenticated>
+        <Settings />
       </Authenticated>
     ),
   },
