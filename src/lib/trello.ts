@@ -56,10 +56,5 @@ export async function getBoards(
   const res = await fetch(url.toString());
   const json = await res.json();
 
-  console.log({
-    res,
-    boards: json,
-  });
-
   return json;
 }

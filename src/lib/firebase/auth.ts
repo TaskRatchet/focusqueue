@@ -39,8 +39,8 @@ export function logout() {
 }
 
 export function useAuthenticatedUser() {
-  const [user, setUser] = useState<User | null>(null);
   const auth = useMemo(() => getAuth(app), [app]);
+  const [user, setUser] = useState<User | null>(auth.currentUser);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, setUser);

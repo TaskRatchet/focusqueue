@@ -27,9 +27,6 @@ export function useMe(): undefined | Record<string, unknown> {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(docRef, (doc) => {
-      console.log({
-        me: doc.data(),
-      });
       setMe(doc.data());
     });
 
