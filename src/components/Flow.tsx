@@ -18,9 +18,7 @@ function Flow() {
         <Stack spacing={2}>
           <Typography variant="h5">{state.tasks[state.currentTask]}</Typography>
 
-          <p>
-            How How How long do you estimate is remaining to complete this task?
-          </p>
+          <p>How long do you estimate is remaining to complete this task?</p>
 
           <TextField
             id="estimate"
