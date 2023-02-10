@@ -10,7 +10,6 @@ import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Authenticated from "./components/Authenticated";
 import Settings from "./components/Settings";
 
 const queryClient = new QueryClient();
@@ -25,19 +24,11 @@ export const AppContext = createContext<[State, Dispatch<Action>]>([
 const router = createBrowserRouter([
   {
     path: "/",
-    element: (
-      <Authenticated>
-        <Flow />
-      </Authenticated>
-    ),
+    element: <Flow />,
   },
   {
     path: "/settings",
-    element: (
-      <Authenticated>
-        <Settings />
-      </Authenticated>
-    ),
+    element: <Settings />,
   },
 ]);
 

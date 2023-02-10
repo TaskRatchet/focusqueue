@@ -6,6 +6,7 @@ import Stack from "@mui/material/Stack";
 import Dump from "./Dump";
 import { useContext } from "react";
 import { AppContext } from "../App";
+import withAuth from "../lib/withAuth";
 
 function Flow() {
   const [state, dispatch] = useContext(AppContext);
@@ -100,4 +101,4 @@ function Flow() {
   }
 }
 
-export default Flow;
+export default withAuth(Flow);

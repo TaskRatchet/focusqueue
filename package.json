@@ -14,6 +14,7 @@
     "@bradgarropy/use-countdown": "^1.5.2",
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
+    "@mui/lab": "5.0.0-alpha.119",
     "@mui/material": "^5.11.1",
     "@tanstack/react-query": "^4.20.4",
     "axios": "^1.2.1",
