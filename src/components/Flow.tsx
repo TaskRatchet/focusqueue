@@ -18,7 +18,9 @@ function Flow() {
         <Stack spacing={2}>
           <Typography variant="h5">{state.tasks[state.currentTask]}</Typography>
 
-          <p>How long do you estimate is remaining to complete this task?</p>
+          <p>
+            How How How long do you estimate is remaining to complete this task?
+          </p>
 
           <TextField
             id="estimate"
@@ -37,15 +39,16 @@ function Flow() {
               dispatch({ type: "setSessionLength", payload: e.target.value })
             }
           />
-
-          <Button
-            variant="contained"
-            onClick={() => {
-              dispatch({ type: "setMode", payload: "countdown" });
-            }}
-          >
-            Submit
-          </Button>
+          <div>
+            <Button
+              variant="contained"
+              onClick={() => {
+                dispatch({ type: "setMode", payload: "countdown" });
+              }}
+            >
+              Submit
+            </Button>
+          </div>
         </Stack>
       );
     case "countdown":
