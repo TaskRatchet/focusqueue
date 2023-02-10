@@ -9,6 +9,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import Authenticated from "./components/Authenticated";
 
 const queryClient = new QueryClient();
 
@@ -16,6 +18,17 @@ export const AppContext = createContext<[State, Dispatch<Action>]>([
   initialState,
   () => {
     console.log("noop dispatch called");
+  },
+]);
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: (
+      <Authenticated>
+        <Flow />
+      </Authenticated>
+    ),
   },
 ]);
 
@@ -36,7 +49,9 @@ function App() {
             </Toolbar>
           </AppBar>
 
-          <Container maxWidth="sm">{user && <Flow />}</Container>
+          <Container maxWidth="sm">
+            <RouterProvider router={router} />
+          </Container>
         </AppContext.Provider>
       </QueryClientProvider>
     </CssBaseline>
