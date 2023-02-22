@@ -16,18 +16,17 @@ describe("App", () => {
     vi.mocked(useAuthenticatedUser).mockReset();
   });
 
-  it("renders", () => {
-    render(<App />);
-  });
-
   it("has login with google button", async () => {
     render(<App />);
+    userEvent.setup();
+    userEvent.click(await screen.findByText(/login/i));
     await screen.findByText(/login with google/i);
   });
 
   it("uses firebase auth to log in with Google", async () => {
     render(<App />);
     userEvent.setup();
+    userEvent.click(await screen.findByText(/login/i));
     const loginButton = await screen.findByText(/login with google/i);
     userEvent.click(loginButton);
     await waitFor(() => expect(loginWithGoogle).toHaveBeenCalled());
@@ -74,6 +73,9 @@ describe("App", () => {
 
   it("lets user log in via github", async () => {
     render(<App />);
+
+    userEvent.setup();
+    userEvent.click(await screen.findByText(/login/i));
 
     const githubButton = await screen.findByText(/github/i);
 
