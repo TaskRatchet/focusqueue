@@ -76,6 +76,7 @@ function Flow() {
                   {
                     value:
                       convertStringToNumericSeconds(state.sessionLength) / 3600,
+                    comment: state.tasks[state.currentTask],
                   }
                 );
               }
