@@ -35,8 +35,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:01");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:01");
 
     await clickInstant(/Start/);
 
@@ -51,8 +51,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:05");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:05");
 
     vi.advanceTimersByTime(1000);
 
@@ -69,8 +69,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:01");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:01");
     await clickInstant("Start");
 
     expect(await screen.findByText("Pause")).toBeInTheDocument();
@@ -84,8 +84,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:05");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:05");
 
     await clickInstant("Start");
 
@@ -109,8 +109,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:05");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:05");
 
     // start timer
     await clickInstant("Start");
@@ -150,8 +150,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:05");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:05");
 
     clickInstant("Start");
 
@@ -175,8 +175,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:05");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:05");
 
     clickInstant("Start");
 
@@ -200,8 +200,8 @@ describe("Countdown", () => {
     });
 
     await user.type(screen.getByLabelText("Task"), "test");
-    await user.clear(screen.getByLabelText("Time"));
-    await user.type(screen.getByLabelText("Time"), "00:01");
+    await user.clear(screen.getByLabelText("Duration"));
+    await user.type(screen.getByLabelText("Duration"), "00:01");
 
     clickInstant("Start");
 

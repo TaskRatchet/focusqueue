@@ -1,10 +1,11 @@
-import { useState, useEffect } from "react";
+import { useMemo, useState, useEffect } from "react";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import useCountdown from "@bradgarropy/use-countdown";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import speak from "../lib/speak";
+import convertStringToNumericSeconds from "../lib/convertStringToNumericSeconds";
 
 export default function Countdown({
   taskDescription = "",
@@ -14,17 +15,15 @@ export default function Countdown({
   sessionLength?: string;
 }) {
   const [task, setTask] = useState(taskDescription || "");
-  const [time, setTime] = useState(sessionLength || "");
-  const [m, setM] = useState(() => {
-    const m = sessionLength.split(":")[0];
-    const mm = parseInt(m);
-    return Number.isFinite(mm) ? mm : 0;
-  });
-  const [s, setS] = useState(() => {
-    const s = sessionLength.split(":")[1];
-    const ss = parseInt(s);
-    return Number.isFinite(ss) ? ss : 0;
-  });
+  const [duration, setDuration] = useState(sessionLength || "");
+
+  const [m, s] = useMemo(() => {
+    const seconds = convertStringToNumericSeconds(duration);
+    const minutes = Math.floor(seconds / 60);
+    const secondsLeft = seconds % 60;
+    if (!Number.isFinite(seconds)) return [0, 0];
+    return [minutes, secondsLeft];
+  }, [duration]);
   const countdown = useCountdown({
     minutes: m,
     seconds: s,
@@ -43,15 +42,12 @@ export default function Countdown({
         }}
       />
       <TextField
-        id="time"
-        label="Time"
+        id="duration"
+        label="Duration"
         variant="outlined"
-        value={time}
+        value={duration}
         onChange={(e) => {
-          setTime(e.target.value);
-          const [m, s] = e.target.value.split(":");
-          setM(parseInt(m));
-          setS(parseInt(s));
+          setDuration(e.target.value);
         }}
       />
       <Stack direction={"row"} spacing={2}>
