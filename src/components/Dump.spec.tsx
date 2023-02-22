@@ -3,9 +3,9 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import Dump from "./Dump";
 import { State } from "../App.reducer";
 import userEvent from "@testing-library/user-event";
-import { authenticate, getCards, getBoards } from "../lib/trello";
-import { updateMe } from "../lib/firebase/firestore";
-import { useMe } from "../lib/firebase/firestore";
+import { authenticate, getCards, getBoards } from "@services/trello";
+import { updateMe } from "@services/firebase/firestore";
+import { useMe } from "@services/firebase/firestore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 const state: State = {

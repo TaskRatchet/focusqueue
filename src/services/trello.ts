@@ -1,4 +1,4 @@
-import getEnvValue from "./getEnvValue";
+import getEnvValue from "@lib/getEnvValue";
 
 export function authenticate() {
   // Redirect user to Trello login page

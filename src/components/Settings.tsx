@@ -1,6 +1,6 @@
 import react, { useEffect, useState } from "react";
 import { Button, Input } from "@mui/material";
-import { updateMe, useMe } from "../lib/firebase/firestore";
+import { updateMe, useMe } from "@services/firebase/firestore";
 import { useMutation } from "@tanstack/react-query";
 import LoadingButton from "@mui/lab/LoadingButton";
 import withAuth from "../lib/withAuth";

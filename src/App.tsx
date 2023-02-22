@@ -1,7 +1,7 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Flow from "./components/Flow";
-import { useAuthenticatedUser } from "./lib/firebase/auth";
+import { useAuthenticatedUser } from "@services/firebase/auth";
 import AuthControls from "./components/AuthControls";
 import { Action, initialState, reducer, State } from "./App.reducer";
 import { createContext, Dispatch, useReducer } from "react";

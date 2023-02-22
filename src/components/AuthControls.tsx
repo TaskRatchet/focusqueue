@@ -4,7 +4,7 @@ import {
   useAuthenticatedUser,
   logout,
   loginWithGithub,
-} from "../lib/firebase/auth";
+} from "@services/firebase/auth";
 import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import { DialogContent } from "@mui/material";

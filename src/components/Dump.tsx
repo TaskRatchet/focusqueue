@@ -1,8 +1,8 @@
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { authenticate, getBoards, getCards } from "../lib/trello";
+import { authenticate, getBoards, getCards } from "@services/trello";
 import { useEffect } from "react";
-import { updateMe, useMe } from "../lib/firebase/firestore";
+import { updateMe, useMe } from "@services/firebase/firestore";
 import { State, Action } from "../App.reducer";
 import TrelloDialog from "./TrelloDialog";
 import { Stack } from "@mui/material";

@@ -7,8 +7,8 @@ import Dump from "./Dump";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import withAuth from "../lib/withAuth";
-import { createDatapoint } from "../lib/beeminder";
-import { useMe } from "../lib/firebase/firestore";
+import { createDatapoint } from "../services/beeminder";
+import { useMe } from "../services/firebase/firestore";
 import convertStringToNumericSeconds from "../lib/convertStringToNumericSeconds";
 
 function Flow() {

@@ -4,9 +4,9 @@ import matchers, {
 } from "@testing-library/jest-dom/matchers";
 import { expect, afterEach, beforeEach } from "vitest";
 import { cleanup } from "@testing-library/react";
-import { loginWithGoogle } from "./src/lib/firebase/auth";
+import { loginWithGoogle } from "@services/firebase/auth";
 import getEnvValue from "./src/lib/getEnvValue";
-import { getCards } from "./src/lib/trello";
+import { getCards } from "@services/trello";
 
 const m: TestingLibraryMatchers<string, void> = matchers;
 
@@ -15,11 +15,11 @@ expect.extend(m);
 
 vi.mock("axios");
 vi.mock("./src/lib/speak");
-vi.mock("./src/lib/firebase/app");
-vi.mock("./src/lib/firebase/auth");
-vi.mock("./src/lib/firebase/firestore");
+vi.mock("@services/firebase/app");
+vi.mock("@services/firebase/auth");
+vi.mock("@services/firebase/firestore");
 vi.mock("./src/lib/getEnvValue");
-vi.mock("./src/lib/trello");
+vi.mock("@services/trello");
 
 beforeEach(() => {
   vi.mocked(loginWithGoogle).mockResolvedValue({} as any);
