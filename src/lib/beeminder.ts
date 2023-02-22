@@ -29,7 +29,7 @@ export async function createDatapoint(
 ) {
   const url = `https://www.beeminder.com/api/v1/users/${user}/goals/${slug}/datapoints.json`;
   const options = {
-    auth_token: token,
+    access_token: token,
     ...data,
   };
 
