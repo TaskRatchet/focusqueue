@@ -7,9 +7,13 @@ import Dump from "./Dump";
 import { useContext } from "react";
 import { AppContext } from "../App";
 import withAuth from "../lib/withAuth";
+import { createDatapoint } from "../lib/beeminder";
+import { useMe } from "../lib/firebase/firestore";
+import convertStringToNumericSeconds from "../lib/convertStringToNumericSeconds";
 
 function Flow() {
   const [state, dispatch] = useContext(AppContext);
+  const me = useMe();
 
   switch (state.mode) {
     case "dump":
@@ -60,6 +64,21 @@ function Flow() {
           <Button
             variant="contained"
             onClick={() => {
+              if (
+                me?.beeminderGoalname &&
+                me?.beeminderToken &&
+                me?.beeminderUsername
+              ) {
+                createDatapoint(
+                  me?.beeminderUsername as string,
+                  me?.beeminderToken as string,
+                  me?.beeminderGoalname as string,
+                  {
+                    value:
+                      convertStringToNumericSeconds(state.sessionLength) / 3600,
+                  }
+                );
+              }
               dispatch({ type: "setMode", payload: "review" });
             }}
           >
