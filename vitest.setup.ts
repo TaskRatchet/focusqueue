@@ -5,7 +5,7 @@ import matchers, {
 import { expect, afterEach, beforeEach } from "vitest";
 import { cleanup } from "@testing-library/react";
 import { loginWithGoogle } from "@services/firebase/auth";
-import getEnvValue from "./src/lib/getEnvValue";
+import getEnvValue from "@lib/getEnvValue";
 import { getCards } from "@services/trello";
 
 const m: TestingLibraryMatchers<string, void> = matchers;
@@ -14,11 +14,11 @@ const m: TestingLibraryMatchers<string, void> = matchers;
 expect.extend(m);
 
 vi.mock("axios");
-vi.mock("./src/lib/speak");
+vi.mock("@lib/getEnvValue");
+vi.mock("@lib/speak");
 vi.mock("@services/firebase/app");
 vi.mock("@services/firebase/auth");
 vi.mock("@services/firebase/firestore");
-vi.mock("./src/lib/getEnvValue");
 vi.mock("@services/trello");
 
 beforeEach(() => {

@@ -38,7 +38,9 @@ describe("Countdown", () => {
     await user.clear(screen.getByLabelText("Duration"));
     await user.type(screen.getByLabelText("Duration"), "00:01");
 
-    await clickInstant(/Start/);
+    await screen.findByRole("button", { name: "Start" });
+
+    clickInstant(/Start/);
 
     expect(await screen.findByText("00:01")).toBeInTheDocument();
   });
@@ -71,7 +73,8 @@ describe("Countdown", () => {
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
     await user.type(screen.getByLabelText("Duration"), "00:01");
-    await clickInstant("Start");
+
+    clickInstant("Start");
 
     expect(await screen.findByText("Pause")).toBeInTheDocument();
   });

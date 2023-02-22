@@ -5,12 +5,12 @@ import { createContext } from "react";
 import { AppContext } from "../App";
 import { initialState } from "../App.reducer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { getBoards } from "../lib/trello";
+import { getBoards } from "@services/trello";
 import userEvent from "@testing-library/user-event";
-import { useAuthenticatedUser } from "../lib/firebase/auth";
-import { useMe } from "../lib/firebase/firestore";
+import { useAuthenticatedUser } from "@services/firebase/auth";
+import { useMe } from "@services/firebase/firestore";
 
-vi.mock("../lib/trello");
+vi.mock("@services/trello");
 
 const queryClient = new QueryClient();
 

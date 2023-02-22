@@ -4,8 +4,8 @@ import Button from "@mui/material/Button";
 import useCountdown from "@bradgarropy/use-countdown";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import speak from "../lib/speak";
-import convertStringToNumericSeconds from "../lib/convertStringToNumericSeconds";
+import speak from "@lib/speak";
+import convertStringToNumericSeconds from "@lib/convertStringToNumericSeconds";
 
 export default function Countdown({
   taskDescription = "",
@@ -68,7 +68,7 @@ export default function Countdown({
           }}
           sx={{ flexGrow: 1 }}
         >
-          {countdown.isPaused || !countdown.isActive ? "Start" : "Pause"}
+          {countdown.isRunning ? "Pause" : "Start"}
         </Button>
         <Button
           variant="contained"

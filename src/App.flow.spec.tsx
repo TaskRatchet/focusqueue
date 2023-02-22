@@ -1,10 +1,11 @@
+// TODO: Consider making this Flow.spec since describe has Flow
 import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, act, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 import { useAuthenticatedUser } from "@services/firebase/auth";
 
-vi.mock("../lib/speak");
+vi.mock("@lib/speak");
 
 describe("Flow", () => {
   beforeEach(() => {
