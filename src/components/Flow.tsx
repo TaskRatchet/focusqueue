@@ -10,6 +10,7 @@ import withAuth from "../lib/withAuth";
 import { createDatapoint } from "../services/beeminder";
 import { useMe } from "../services/firebase/firestore";
 import convertStringToNumericSeconds from "../lib/convertStringToNumericSeconds";
+import React from "react";
 
 function Flow() {
   const [state, dispatch] = useContext(AppContext);

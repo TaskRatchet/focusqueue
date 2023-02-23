@@ -1,5 +1,5 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
-import { render, screen, act, waitFor } from "@testing-library/react";
+import { describe, it, expect, beforeEach, vi } from "vitest";
+import { render, screen, waitFor } from "@testing-library/react";
 import App from "./App";
 import userEvent from "@testing-library/user-event";
 import {
@@ -8,6 +8,7 @@ import {
   logout,
   useAuthenticatedUser,
 } from "@services/firebase/auth";
+import React from "react";
 
 vi.mock("./lib/speak");
 

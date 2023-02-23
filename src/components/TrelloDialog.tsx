@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from "react";
+import { useContext, useState } from "react";
 import { AppContext } from "../App";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -11,11 +11,12 @@ import { useQuery } from "@tanstack/react-query";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
+import React from "react";
 
 export default function TrelloDialog() {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Record<string, boolean>>({});
-  const [state, dispatch] = useContext(AppContext);
+  const [, dispatch] = useContext(AppContext);
   const me = useMe();
   const { data } = useQuery(
     ["boards"],

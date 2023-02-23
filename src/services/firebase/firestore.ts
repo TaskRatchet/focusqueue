@@ -2,7 +2,6 @@ import { getAuth } from "firebase/auth";
 import {
   getFirestore,
   doc,
-  getDoc,
   updateDoc,
   onSnapshot,
   UpdateData,

@@ -3,6 +3,7 @@ import { render, screen, act, waitFor } from "@testing-library/react";
 import Countdown from "./Countdown";
 import userEvent from "@testing-library/user-event";
 import speak from "../lib/speak";
+import React from "react";
 
 vi.mock("../lib/speak");
 

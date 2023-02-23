@@ -1,12 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import Dump from "./Dump";
 import { State } from "../App.reducer";
 import userEvent from "@testing-library/user-event";
-import { authenticate, getCards, getBoards } from "@services/trello";
+import { authenticate, getBoards } from "@services/trello";
 import { updateMe } from "@services/firebase/firestore";
 import { useMe } from "@services/firebase/firestore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import React from "react";
 
 const state: State = {
   tasks: ["task1", "task2"],

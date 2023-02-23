@@ -1,7 +1,4 @@
-export default function getEnvValue<T extends unknown>(
-  key: string,
-  defaultValue?: T
-): T {
+export default function getEnvValue<T>(key: string, defaultValue?: T): T {
   try {
     const env = __ENV__;
     if (key in env) {
@@ -12,6 +9,7 @@ export default function getEnvValue<T extends unknown>(
       throw new Error(`Value for key "${key}" not found in env`);
     }
   } catch (error) {
-    throw new Error(`Error parsing env: ${error.message}`);
+    const m = error instanceof Error ? error.message : JSON.stringify(error);
+    throw new Error(`Error parsing env: ${m}`);
   }
 }

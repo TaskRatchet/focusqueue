@@ -1,14 +1,13 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, vi, expect } from "vitest";
 import TrelloDialog from "./TrelloDialog";
-import { createContext } from "react";
 import { AppContext } from "../App";
 import { initialState } from "../App.reducer";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { getBoards } from "@services/trello";
 import userEvent from "@testing-library/user-event";
-import { useAuthenticatedUser } from "@services/firebase/auth";
 import { useMe } from "@services/firebase/firestore";
+import React from "react";
 
 vi.mock("@services/trello");
 

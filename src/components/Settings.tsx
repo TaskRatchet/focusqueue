@@ -1,4 +1,4 @@
-import react, { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Input } from "@mui/material";
 import { updateMe, useMe } from "@services/firebase/firestore";
 import { useMutation } from "@tanstack/react-query";

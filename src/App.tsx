@@ -1,10 +1,9 @@
 import CssBaseline from "@mui/material/CssBaseline";
 import Container from "@mui/material/Container";
 import Flow from "@components/Flow";
-import { useAuthenticatedUser } from "@services/firebase/auth";
 import AuthControls from "@components/AuthControls";
 import { Action, initialState, reducer, State } from "./App.reducer";
-import { createContext, Dispatch, useReducer } from "react";
+import React, { createContext, Dispatch, useReducer } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
@@ -33,7 +32,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  const user = useAuthenticatedUser();
   const r = useReducer(reducer, initialState);
 
   return (

@@ -45,5 +45,8 @@
         "src",
         "./vite.d.ts",
         "./vitest.setup.ts"
+    ],
+    "exclude": [
+        ".eslintrc.cjs"
     ]
 }
