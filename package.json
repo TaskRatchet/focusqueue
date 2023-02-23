@@ -9,7 +9,8 @@
     "format": "prettier --write .",
     "preview": "vite preview",
     "test": "vitest",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "unused": "depcheck"
   },
   "dependencies": {
     "@bradgarropy/use-countdown": "^1.5.2",
@@ -22,9 +23,7 @@
     "firebase": "^9.17.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.8.1",
-    "tslib": "^2.5.0",
-    "use-local-storage-state": "^18.1.2"
+    "react-router-dom": "^6.8.1"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -36,10 +35,12 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "@vitejs/plugin-react-swc": "^3.2.0",
+    "depcheck": "^1.4.3",
     "eslint": "^8.34.0",
     "eslint-plugin-react": "^7.32.2",
     "jsdom": "^20.0.3",
     "prettier": "^2.8.4",
+    "tslib": "^2.5.0",
     "typescript": "^4.9.5",
     "vite": "^4.1.4",
     "vite-aliases": "^0.10.0",
