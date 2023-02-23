@@ -57,6 +57,7 @@ jobs:
           echo "$(pnpm outdated)" >> ./outdated.md
           echo "\`\`\`" >> ./outdated.md
       - name: Find comment
+        if: always()
         uses: peter-evans/find-comment@v2
         id: fc
         with:
