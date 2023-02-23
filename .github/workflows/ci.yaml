@@ -85,17 +85,17 @@ jobs:
         run: pnpm install
       - name: Lint code
         run: pnpm run lint
-  # prettier:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: pnpm/action-setup@v2.2.2
-  #       with:
-  #         version: 7
-  #     - name: Use Node.js ${{ env.NODE_VERSION }}
-  #       uses: actions/setup-node@v2
-  #       with:
-  #         node-version: ${{ env.NODE_VERSION }}
-  #         cache: "pnpm"
-  #     - name: Run Prettier
-  #       run: pnpm dlx prettier --check .
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: pnpm/action-setup@v2.2.2
+        with:
+          version: 7
+      - name: Use Node.js ${{ env.NODE_VERSION }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+      - name: Run Prettier
+        run: pnpm dlx prettier --check .
