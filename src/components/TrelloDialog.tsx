@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { AppContext } from "../App";
+import { AppContext } from "@/App";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";

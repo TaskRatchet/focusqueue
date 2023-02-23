@@ -5,11 +5,11 @@ import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import Dump from "./Dump";
 import { useContext } from "react";
-import { AppContext } from "../App";
-import withAuth from "../lib/withAuth";
-import { createDatapoint } from "../services/beeminder";
-import { useMe } from "../services/firebase/firestore";
-import convertStringToNumericSeconds from "../lib/convertStringToNumericSeconds";
+import { AppContext } from "@/App";
+import withAuth from "@lib/withAuth";
+import { createDatapoint } from "@services/beeminder";
+import { useMe } from "@services/firebase/firestore";
+import convertStringToNumericSeconds from "@lib/convertStringToNumericSeconds";
 import React from "react";
 
 function Flow() {

@@ -1,4 +1,4 @@
-import { useAuthenticatedUser } from "../services/firebase/auth";
+import { useAuthenticatedUser } from "@services/firebase/auth";
 import React from "react";
 
 export default function withAuth<T>(Component: React.FunctionComponent<T>) {

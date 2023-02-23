@@ -2,7 +2,7 @@ import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useEffect } from "react";
 import { updateMe, useMe } from "@services/firebase/firestore";
-import { State, Action } from "../App.reducer";
+import { State, Action } from "@/App.reducer";
 import TrelloDialog from "./TrelloDialog";
 import { Stack } from "@mui/material";
 import React from "react";

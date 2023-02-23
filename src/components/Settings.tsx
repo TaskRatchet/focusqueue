@@ -3,7 +3,7 @@ import { Button, Input } from "@mui/material";
 import { updateMe, useMe } from "@services/firebase/firestore";
 import { useMutation } from "@tanstack/react-query";
 import LoadingButton from "@mui/lab/LoadingButton";
-import withAuth from "../lib/withAuth";
+import withAuth from "@lib/withAuth";
 
 const redirectUri = "http://localhost:5173/settings";
 const clientId = "3yyb3d0ywheam1gjui40gn4eh";

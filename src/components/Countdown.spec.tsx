@@ -2,10 +2,10 @@ import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
 import { render, screen, act, waitFor } from "@testing-library/react";
 import Countdown from "./Countdown";
 import userEvent from "@testing-library/user-event";
-import speak from "../lib/speak";
+import speak from "@lib/speak";
 import React from "react";
 
-vi.mock("../lib/speak");
+vi.mock("@lib/speak");
 
 // Use this function instead of userEvent.click() to avoid
 // advancing timers before the click event is fired.
