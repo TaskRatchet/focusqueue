@@ -57,7 +57,6 @@ jobs:
           echo "$(pnpm outdated)" >> ./outdated.md
           echo "\`\`\`" >> ./outdated.md
       - name: Find comment
-        if: always()
         uses: peter-evans/find-comment@v2
         id: fc
         with:
@@ -65,6 +64,7 @@ jobs:
           comment-author: "github-actions[bot]"
           body-includes: "Outdated dependencies"
       - name: Create or update comment
+        if: always()
         uses: peter-evans/create-or-update-comment@v2
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
