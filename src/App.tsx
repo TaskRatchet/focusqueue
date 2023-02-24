@@ -38,7 +38,12 @@ function App() {
     <CssBaseline>
       <QueryClientProvider client={queryClient}>
         <AppContext.Provider value={r}>
-          <AppBar position="static">
+          <AppBar
+            position="static"
+            sx={{
+              mb: 4,
+            }}
+          >
             <Toolbar>
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Focusqueue
