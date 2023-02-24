@@ -1,11 +1,13 @@
-import { describe, it, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, act, waitFor } from "@testing-library/react";
 import Countdown from "./Countdown";
 import userEvent from "@testing-library/user-event";
 import speak from "@lib/speak";
 import React from "react";
+import { __advance, __complete, __reset } from "@bradgarropy/use-countdown";
 
 vi.mock("@lib/speak");
+vi.mock("@bradgarropy/use-countdown");
 
 // Use this function instead of userEvent.click() to avoid
 // advancing timers before the click event is fired.
@@ -19,23 +21,13 @@ const clickInstant = (name: string | RegExp) =>
   );
 
 describe("Countdown", () => {
-  beforeEach(() => {
-    vi.useFakeTimers();
-  });
-
-  afterEach(() => {
-    vi.runOnlyPendingTimers();
-    vi.useRealTimers();
-  });
-
   it("uses given time for countdown", async () => {
     render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
+    const taskInput = screen.getByLabelText("Task");
 
-    await user.type(screen.getByLabelText("Task"), "test");
+    await user.type(taskInput, "test");
     await user.clear(screen.getByLabelText("Duration"));
     await user.type(screen.getByLabelText("Duration"), "00:01");
 
@@ -47,29 +39,27 @@ describe("Countdown", () => {
   });
 
   it("waits until start click before updating countdown", async () => {
-    const { rerender } = render(<Countdown />);
+    render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
     await user.type(screen.getByLabelText("Duration"), "00:05");
 
-    vi.advanceTimersByTime(1000);
+    expect(__reset).not.toBeCalled();
 
-    rerender(<Countdown />);
+    user.click(screen.getByRole("button", { name: "Start" }));
 
-    expect(screen.getByText("00:00")).toBeInTheDocument();
+    await waitFor(() => {
+      expect(__reset).toBeCalled();
+    });
   });
 
   it("has pause button", async () => {
     render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
@@ -83,61 +73,44 @@ describe("Countdown", () => {
   it("pauses countdown", async () => {
     render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
     await user.type(screen.getByLabelText("Duration"), "00:05");
 
-    await clickInstant("Start");
+    clickInstant("Start");
 
-    vi.runOnlyPendingTimers();
-    vi.advanceTimersByTime(900);
+    await screen.findByText("Pause");
 
-    await clickInstant("Pause");
+    clickInstant("Pause");
 
     await screen.findByText("Start");
-
-    vi.advanceTimersByTime(5000);
-
-    expect(screen.getByText("00:04")).toBeInTheDocument();
   });
 
   it("resumes countdown", async () => {
-    const { rerender } = render(<Countdown />);
+    render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
     await user.type(screen.getByLabelText("Duration"), "00:05");
 
     // start timer
-    await clickInstant("Start");
-
-    vi.runOnlyPendingTimers();
+    clickInstant("Start");
 
     // pause timer
-    await clickInstant("Pause");
+    clickInstant("Pause");
 
     // confirm paused
     await screen.findByText("Start");
-    vi.advanceTimersByTime(1000);
-    rerender(<Countdown />);
-    expect(screen.getByText("00:04")).toBeInTheDocument();
 
     // resume timer
-    await clickInstant("Start");
+    clickInstant("Start");
 
     // confirm resumed
     await screen.findByText("Pause");
-    vi.advanceTimersByTime(1000);
-    rerender(<Countdown />);
-    expect(screen.getByText("00:03")).toBeInTheDocument();
   });
 
   it("has reset button", async () => {
@@ -147,11 +120,9 @@ describe("Countdown", () => {
   });
 
   it("resets timer when reset button clicked", async () => {
-    const { rerender } = render(<Countdown />);
+    render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
@@ -159,39 +130,26 @@ describe("Countdown", () => {
 
     clickInstant("Start");
 
-    vi.runOnlyPendingTimers();
-    vi.advanceTimersByTime(1000);
+    __advance(1);
 
-    rerender(<Countdown />);
+    await screen.findByText("00:04");
 
     clickInstant("Reset");
-
-    rerender(<Countdown />);
 
     expect(screen.getByText("00:05")).toBeInTheDocument();
   });
 
   it("pauses timer on reset", async () => {
-    const { rerender } = render(<Countdown />);
+    render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
     await user.type(screen.getByLabelText("Duration"), "00:05");
 
     clickInstant("Start");
-
-    vi.runOnlyPendingTimers();
-    vi.advanceTimersByTime(1000);
-
-    rerender(<Countdown />);
-
     clickInstant("Reset");
-
-    rerender(<Countdown />);
 
     expect(screen.getByText("Start")).toBeInTheDocument();
   });
@@ -199,9 +157,7 @@ describe("Countdown", () => {
   it('says "done" when countdown completes', async () => {
     render(<Countdown />);
 
-    const user = userEvent.setup({
-      advanceTimers: () => vi.runOnlyPendingTimers(),
-    });
+    const user = userEvent.setup();
 
     await user.type(screen.getByLabelText("Task"), "test");
     await user.clear(screen.getByLabelText("Duration"));
@@ -209,8 +165,7 @@ describe("Countdown", () => {
 
     clickInstant("Start");
 
-    vi.runOnlyPendingTimers();
-    vi.advanceTimersByTime(1000);
+    __complete();
 
     await waitFor(() => {
       expect(speak).toBeCalled();

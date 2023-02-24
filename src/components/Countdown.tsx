@@ -25,6 +25,7 @@ export default function Countdown({
     if (!Number.isFinite(seconds)) return [0, 0];
     return [minutes, secondsLeft];
   }, [duration]);
+
   const countdown = useCountdown({
     minutes: m,
     seconds: s,

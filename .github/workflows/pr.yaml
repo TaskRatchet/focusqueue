@@ -1,5 +1,7 @@
 name: PR
 on: pull_request
+env:
+  NODE_VERSION: 18.6.0
 jobs:
   outdated:
     runs-on: ubuntu-latest
