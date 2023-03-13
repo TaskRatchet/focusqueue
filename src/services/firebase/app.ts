@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import getEnvValue from "@lib/getEnvValue";
+import { getFirestore } from "firebase/firestore";
 
 const e = (k: string) => getEnvValue<string>(k);
 
@@ -13,5 +14,7 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
+export const db = getFirestore(app);
 
 export default app;

@@ -1,35 +1,54 @@
 import { getAuth } from "firebase/auth";
 import {
-  getFirestore,
   doc,
   updateDoc,
   onSnapshot,
   UpdateData,
+  collection,
+  addDoc,
 } from "firebase/firestore";
-import app from "./app";
+import app, { db } from "./app";
 import { useEffect, useMemo, useState } from "react";
 
-export function updateMe(data: UpdateData<unknown>) {
+function getCurrentUser() {
   const auth = getAuth(app);
-  const user = auth.currentUser;
-  if (!user) {
-    throw new Error("updateMe: user is not authenticated");
-  }
-  const firestore = getFirestore(app);
-  const docRef = doc(firestore, "users", user.uid);
+
+  if (auth.currentUser) return auth.currentUser;
+
+  throw new Error("updateMe: user is not authenticated");
+}
+
+export function addTask(data: UpdateData<unknown>) {
+  const user = getCurrentUser();
+  const tasks = collection(db, "users", user.uid, "tasks");
+
+  return addDoc(tasks, data);
+}
+
+export function addSession(taskId: string, data: UpdateData<unknown>) {
+  const user = getCurrentUser();
+  const sessions = collection(
+    db,
+    "users",
+    user.uid,
+    "tasks",
+    taskId,
+    "sessions"
+  );
+
+  return addDoc(sessions, data);
+}
+
+export function updateMe(data: UpdateData<unknown>) {
+  const user = getCurrentUser();
+  const docRef = doc(db, "users", user.uid);
 
   return updateDoc(docRef, data);
 }
 
 export function useMe(): undefined | Record<string, unknown> {
-  const auth = getAuth(app);
-  const user = auth.currentUser;
-  if (!user) {
-    throw new Error("useMe: user is not authenticated");
-  }
-
-  const firestore = getFirestore(app);
-  const docRef = useMemo(() => doc(firestore, "users", user.uid), [user]);
+  const user = getCurrentUser();
+  const docRef = useMemo(() => doc(db, "users", user.uid), [user]);
   const [me, setMe] = useState<Record<string, unknown>>();
 
   useEffect(() => {

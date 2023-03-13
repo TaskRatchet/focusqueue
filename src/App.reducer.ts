@@ -24,11 +24,13 @@ export const initialState: State = {
 
 export function reducer(state: State, action: Action): State {
   switch (action.type) {
-    case "setTasks":
+    case "setTasks": {
+      const tasks = action.payload.split("\n");
       return {
         ...state,
-        tasks: action.payload.split("\n"),
+        tasks,
       };
+    }
     case "setMode":
       return {
         ...state,
