@@ -35,7 +35,7 @@ export default function TrelloDialog() {
   return (
     <>
       <Button
-        variant="contained"
+        variant="outlined"
         onClick={() => {
           if (typeof me?.trelloToken !== "string") {
             authenticate();

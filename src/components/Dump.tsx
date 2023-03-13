@@ -44,7 +44,7 @@ export default function Dump({
         }
       />
 
-      <Stack direction="row" spacing={2}>
+      <Stack direction="row" spacing={2} justifyContent="flex-end">
         <TrelloDialog />
 
         <Button
