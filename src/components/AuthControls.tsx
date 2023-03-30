@@ -9,13 +9,22 @@ import Stack from "@mui/material/Stack";
 import Dialog from "@mui/material/Dialog";
 import { DialogContent } from "@mui/material";
 import React, { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 export default function AuthControls() {
+  const queryClient = useQueryClient();
   const user = useAuthenticatedUser();
   const [open, setOpen] = useState(false);
 
   return user ? (
-    <Button variant="contained" color="secondary" onClick={logout}>
+    <Button
+      variant="contained"
+      color="secondary"
+      onClick={() => {
+        logout();
+        queryClient.clear();
+      }}
+    >
       Logout
     </Button>
   ) : (

@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AppContext } from "@/App";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
@@ -18,7 +18,7 @@ export default function TrelloDialog() {
   const [items, setItems] = useState<Record<string, boolean>>({});
   const [, dispatch] = useContext(AppContext);
   const me = useMe();
-  const { data } = useQuery(
+  const { data, isLoading, refetch } = useQuery(
     ["boards"],
     () => {
       return typeof me?.trelloToken == "string"
@@ -27,6 +27,10 @@ export default function TrelloDialog() {
     },
     { placeholderData: [] }
   );
+
+  useEffect(() => {
+    refetch();
+  }, [me?.trelloToken]);
 
   if (data === undefined) {
     return null;
@@ -48,22 +52,26 @@ export default function TrelloDialog() {
       <Dialog open={open} onClose={() => setOpen(false)}>
         <DialogTitle>Select Boards to Import</DialogTitle>
         <DialogContent>
-          <FormGroup>
-            {data.map((board) => (
-              <FormControlLabel
-                key={board.id}
-                control={
-                  <Checkbox
-                    checked={!!items?.[board.id]}
-                    onChange={(e) =>
-                      setItems({ ...items, [board.id]: e.target.checked })
-                    }
-                  />
-                }
-                label={board.name}
-              />
-            ))}
-          </FormGroup>
+          {isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            <FormGroup>
+              {data.map((board) => (
+                <FormControlLabel
+                  key={board.id}
+                  control={
+                    <Checkbox
+                      checked={!!items?.[board.id]}
+                      onChange={(e) =>
+                        setItems({ ...items, [board.id]: e.target.checked })
+                      }
+                    />
+                  }
+                  label={board.name}
+                />
+              ))}
+            </FormGroup>
+          )}
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setOpen(false)}>Cancel</Button>
